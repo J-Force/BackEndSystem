@@ -16,8 +16,16 @@
 				{{ $errors->first('password') }}
 			@endif
 		</div>
+		<div class="field">
+			<input type="checkbox" name="remember" id="remember" >
+			<label for="remember">
+				Remember me
+			</label>
+		</div>
 
 		<input type="submit" value="Sign in">
 		{{ Form::token() }}
 	</form>
+
+	<a href="{{ URL::route('account-forgot-password') }}">Forgot Password?</a>
 @endsection

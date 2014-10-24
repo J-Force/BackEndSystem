@@ -22,6 +22,51 @@ Route::get('product/{id}', array('as' => 'product' , 'uses' => 'ProductControlle
 
 Route::get('news', array('uses' => 'NewsController@showNews') );
 
+Route::get('/user/profile' , array(
+	'as' => 'profile-user',
+	'uses' => 'ProfileController@user'
+));
+
+
+
+/*
+	Authenticated group
+*/
+Route::group(array('before' => 'auth'),function(){
+
+	/*
+		CSRF protection group
+	*/
+	Route::group( array('before' => 'crsf' ) ,function() {
+		/*
+			Change password (POST)
+		*/
+		Route::post('user/change_password' ,array(
+			'as' => 'account-change-password-post',
+			'uses' => 'AccountController@postChangePassword'
+		)); 
+	});
+
+	/*
+		Change password (GET)
+	*/
+	Route::get('user/change_password', array(
+		'as' => 'account-change-password',
+		'uses' => 'AccountController@getChangePassword'
+	));
+
+	/*
+		Sign Out (GET)
+	*/
+	Route::get('user/sign_out',array(
+		'as' => 'account-sign-out',
+		'uses' => 'AccountController@getSignOut'
+	));
+
+});
+
+
+
 /*
 	Unauthenticated group
 */
@@ -34,25 +79,41 @@ Route::group( array('before' => 'guest'), function(){
 		/*
 			Create account(POST)
 		*/
-		Route::post('/account/create' , array(
+		Route::post('/user/register' , array(
 			'as' => 'account-create-post' ,
 			'uses' => 'AccountController@postCreate'
 		));
 
 		/*
-		Sign in(POST)
+			Sign in(POST)
 		*/
-		Route::post('/account/sign-in' , array(
+		Route::post('/user/sign_in' , array(
 			'as' => 'account-sign-in-post',
 			'uses' => 'AccountController@postSignIn'
+		));
+
+		/*
+			Forgot password(POST)
+		*/
+		Route::post('/user/forgot-password' , array(
+			'as' => 'account-forgot-password-post',
+			'uses' => 'AccountController@postForgotPassword'
 		));
 
 	});
 
 	/*
+		Forgot password(GET)
+	*/
+	Route::get('/user/forgot-password' , array(
+		'as' => 'account-forgot-password',
+		'uses' => 'AccountController@getForgotPassword'
+	));
+
+	/*
 		Sign in(GET)
 	*/
-	Route::get('/account/sign-in' , array(
+	Route::get('/user/sign_in' , array(
 		'as' => 'account-sign-in',
 		'uses' => 'AccountController@getSignIn'
 	));
@@ -60,7 +121,7 @@ Route::group( array('before' => 'guest'), function(){
 	/*
 		Create account(GET)
 	*/
-	Route::get('/account/create' , array(
+	Route::get('/user/register' , array(
 		'as' => 'account-create' ,
 		'uses' => 'AccountController@getCreate'
 	));

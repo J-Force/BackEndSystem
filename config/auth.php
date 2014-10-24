@@ -17,6 +17,9 @@ return array(
 
 	'driver' => 'database',
 
+	'username' => 'email',
+	'password' => 'password',
+
 	/*
 	|--------------------------------------------------------------------------
 	| Authentication Model

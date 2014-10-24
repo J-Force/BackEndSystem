@@ -13,7 +13,10 @@
 
 				<button class="navbar-button">Search</button>
 				@if(Auth::check())
-					Log Out
+				<div class="navbar-form">
+					<button class="navbar-button" onclick="window.location='{{ URL::route('profile-user'); }}'"> Profile </button>
+					<button class="navbar-button" onclick="window.location='{{ URL::route('account-sign-out'); }}'"> Sign out</button>
+				</div>
 				@else
 				<div class="navbar-form">
 					<form action="{{ URL::route('account-sign-in-post') }}" , method="post">

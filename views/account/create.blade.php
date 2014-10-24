@@ -24,7 +24,7 @@
 			@endif
 		</div>
 
-		<input type="submit" value="Create Account">
+		<input type="submit" value="Register">
 		{{ Form::token() }}
 	</form>
 @endsection
