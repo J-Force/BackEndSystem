@@ -3,7 +3,7 @@ class AccountController extends BaseController {
 
 	public function getSignOut() {
 		Auth::logout();
-		return Redirect::route('home');
+		return Redirect::route('home')->with('success','Sign out');
 	}
 
 	public function getSignIn() {
@@ -42,10 +42,10 @@ class AccountController extends BaseController {
 
 				Session::put('user' , Auth::user() );
 
-				return Redirect::intended('/');
+				return Redirect::intended('/')->with('success' , 'Sign in successfully');
 			} else {
 				return Redirect::route('account-sign-in')
-			   					->with('global' , 'There was a problem signing you in. Wrong password or email ?');
+			   					->with('fail' , 'There was a problem signing you in. Wrong password or email ?');
 			}
 		}
 	}
@@ -57,9 +57,15 @@ class AccountController extends BaseController {
 	public function postCreate() {
 		$validator = Validator::make(Input::all(),
 			array(
-				'email' 				=> 'required|max:50|email|unique:users',
+				'email' 				=> 'required|max:50|email|unique:users,email',
 				'password'  			=> 'required|min:8',
-				'password_confirmation' => 'required|same:password'
+				'password_confirmation' => 'required|same:password',
+				'first_name'			=> 'required',
+				'last_name'				=> 'required',
+				'sex'					=> 'required',
+				'identified_number'		=> 'required|numeric|min:13|max:13|unique:users',
+				'address'				=> 'required',
+				'phone'					=> 'required|numeric'
 			)
 		);
 
@@ -69,15 +75,27 @@ class AccountController extends BaseController {
 				   ->withInput();
 		} else {
 
+			$dob = new DateTime(Input::get('year'). '-' .Input::get('month') . '-' . Input::get('day'));
+
 			$user = User::create(array(
 				'email' 	=> Input::get('email'),
 				'password'	=> Hash::make(Input::get('password')),
+				'first_name'=> Input::get('first_name'),
+				'last_name'	=> Input::get('last_name'),
+				'sex'		=> Input::get('sex'),
+				'identified_number' => Input::get('identified_number'),
+				'address'	=> Input::get('address'),
+				'phone'		=> Input::get('phone'),
+				'date_of_birth' => $dob->format('Y-m-d'),
 				'active' => 0
 			));
 
 			if($user) {
+
+
+				Auth::login($user);
 				return Redirect::route('home')
-					   ->with('global', 'Your account has been created!');
+					   ->with('success', 'Your account has been created!');
 			}
 		}
 	}
@@ -114,19 +132,19 @@ class AccountController extends BaseController {
 
 				if($user->save()) {
 					return Redirect::route('home')
-					       ->with('global' , 'Your password has been changed');
+					       ->with('success' , 'Your password has been changed');
 				}
 			} else {
 
 				return Redirect::route('account-change-password')
-						->with('global' , ' Your current password is incorrect');
+						->with('fail' , ' Your current password is incorrect');
 
 			}
 			
 		}
 
 		return Redirect::route('account-change-password')
-				->with('global','Your password could not be changed');
+				->with('fail','Your password could not be changed');
 	}
 
 	public function getForgotPassword() {
@@ -136,7 +154,8 @@ class AccountController extends BaseController {
 	public function postForgotPassword() {
 		$validator = Validator::make(Input::all(),
 			array(
-				'email' => 'required|email|max:50'
+				'email' => 'required|email|max:50',
+				'identified_number' => 'required|min:13|max:13'
 			)
 		);
 
@@ -146,10 +165,9 @@ class AccountController extends BaseController {
 					->withInput();
 		} else {
 
-			$user = User::where('email' , '=' , Input::get('email'));
+			$user = User::where('email' , '=' , Input::get('email'))->first();
 
-			if($user->count()) {
-				$user = $user->first();
+			if($user->identified_number == Input::get('identified_number') ) {
 
 				//Generate password
 				$password 			 = str_random(8);
@@ -158,13 +176,13 @@ class AccountController extends BaseController {
 				if( $user->save() ) {
 
 					$data = array(
-						'url' 		=> URL::route('home'),
+						'url' 		=> URL::route('account-sign-in'),
 						'email' 	=> $user->email,
 						'password' 	=> $password 
 					);
 
 					Mail::send( 'emails.auth.forgot' , $data ,function($message) use ($user) {
-							$message->to($user->email)->subject('Your new password');
+							$message->to(Input::get('email'))->subject('Your new password');
 						}
 					);
 
@@ -174,7 +192,7 @@ class AccountController extends BaseController {
 
 
 					return Redirect::route('home')
-							->with('global' , 'The system send mail to your email about new password');
+							->with('fail' , 'The system send mail to your email about new password');
 				}
 
 			}
@@ -183,7 +201,7 @@ class AccountController extends BaseController {
 		}
 
 		return Redirect::route('account-forgot-password')
-				->with('global' , 'Could not request new password');
+				->with('success' , 'Could not request new password');
 	}
 
 }

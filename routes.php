@@ -45,6 +45,16 @@ Route::group(array('before' => 'auth'),function(){
 			'as' => 'account-change-password-post',
 			'uses' => 'AccountController@postChangePassword'
 		)); 
+
+		/*
+			Update Profile (POST)
+		*/
+
+		Route::post('/user/profile' , array(
+			'as' => 'profile-user-update',
+			'uses' => 'ProfileController@postUpdate'
+		));
+
 	});
 
 	/*
