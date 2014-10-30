@@ -88,3 +88,11 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+
+Route::filter('can_edit' , function() {
+	if (! Entrust::can('can_edit') ) // Checks the current user
+    {
+        return Redirect::intended('/')->with('failed', 'You don\'t have access!');;
+    }
+});

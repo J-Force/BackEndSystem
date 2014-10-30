@@ -43,7 +43,7 @@ class ProfileController extends BaseController {
 			$user->interest = Input::get('interest');
 			$user->save();
 
-			return Redirect::route('profile-user')->with('success', 'Your profile is updated');
+			return Redirect::intended('/')->with('success', 'Your profile is updated');
 
 		}
 

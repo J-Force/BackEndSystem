@@ -24,12 +24,17 @@
 
   <!-- Custom styles for this template -->
   <link href="/jf-shop/css/carousel.css" rel="stylesheet">
+  <link href="/jf-shop/css/captionHoverEffect.css" rel="stylesheet">
+  <link href="/jf-shop/css/dropzone.css" rel="stylesheet">
   <!-- Bootstrap core JavaScript
     ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
   <script src="/jf-shop/js/jquery.js"></script>
   <script src="/jf-shop/js/bootstrap.js"></script>
   <script src="/jf-shop/js/docs.js"></script>
+  <script src="/jf-shop/js/toucheffects.js"></script>
+  <script src="/jf-shop/js/modernizr.custom.js"></script>
+  <script src="/jf-shop/js/dropzone-amd-module.min.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <script src="/jf-shop/js/ie10-viewport-bug-workaround.js"></script>
   <script type="text/javascript"> $('.dropdown-toggle').dropdown(); </script>
@@ -80,7 +85,7 @@
   }
 </style>
 </head>
-<body>
+<body style="padding-left : 5em;padding-right : 5em">
 	@if(Session::has('success'))
 		<div class="alert alert-success">
         <h2>{{ Session::get('success') }}</h2>
@@ -90,9 +95,9 @@
         <h2>{{ Session::get('fail') }}</h2>
     </div>
 	@endif
-
 	@include('layout.navigation')
 	@yield('content')
+  
 
 </body>
 </html>

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTestuser extends Migration {
+class CreateImages extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,10 +12,11 @@ class AddTestuser extends Migration {
 	 */
 	public function up()
 	{
-		DB::table('users')->insert(array(
-			'email' =>'test@test.com',
-			'password' => Hash::make('1q2w3e4r5t')
-		));
+		Schema::create('images',function($table){
+			$table->increments('id');
+			$table->string('link');
+			$table->timestamps();
+		});
 	}
 
 	/**
@@ -25,7 +26,7 @@ class AddTestuser extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('images');
 	}
 
 }

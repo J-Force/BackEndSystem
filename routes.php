@@ -16,18 +16,39 @@ Route::get('/', array(
 	'uses' => 'HomeController@home')
 );
 
-Route::get('product' , array('as' => 'products' , 'uses' => 'ProductController@showProduct') );
+Route::get('/products' , array('as' => 'products' , 'uses' => 'ProductController@showProduct') );
 
-Route::get('product/{id}', array('as' => 'product' , 'uses' => 'ProductController@view') );
+Route::get('/products/{id}', array('as' => 'product' , 'uses' => 'ProductController@view') );
 
-Route::get('news', array('uses' => 'NewsController@showNews') );
+Route::get('/products-add', array('as' => 'product-add-view' , 'uses' => 'ProductController@showAddProduct') );
 
-Route::get('/user/profile' , array(
-	'as' => 'profile-user',
-	'uses' => 'ProfileController@user'
+Route::post('products/create', array('before' => 'csrf','uses' => 'ProductController@addProduct'));
+
+Route::get('/products/{id}/edit', array('as' => 'product-edit-view' , 'uses' => 'ProductController@showEditProduct'));
+
+Route::put('products/update', array('before' => 'csrf','uses' => 'ProductController@editProduct'));
+
+Route::delete('products/delete', array('before' => 'csrf','uses' => 'ProductController@deleteProduct'));
+
+Route::get('/news', array('as' => 'news', 'uses' => 'NewsController@get') );
+
+Route::get('/products/{id}/add-image', array('as' => 'product-add-image' , 'uses' => 'ProductController@showAddImage'));
+
+/*
+	
+*/
+Route::get('/catalog/man' , array(
+	'as' => 'catalog-man' ,
+	'uses' => 'ProductController@getCatalogMen'
 ));
 
-
+/*
+	
+*/
+Route::get('/catalog/women' , array(
+	'as' => 'catalog-women' ,
+	'uses' => 'ProductController@getCatalogWomen'
+));
 
 /*
 	Authenticated group
@@ -55,7 +76,45 @@ Route::group(array('before' => 'auth'),function(){
 			'uses' => 'ProfileController@postUpdate'
 		));
 
+		Route::post('/user/orders/add_cart' ,array(
+			'as' => 'user-order-add',
+			'uses' => 'OrderController@addCart'
+		));
+
+		Route::post('/user/orders/remove_cart' ,array(
+			'as' => 'user-order-remove',
+			'uses' => 'OrderController@removeCart'
+		));
+
 	});
+
+	/*
+		For Admin
+	*/
+	//if(Entrust::hasRole('Admin')) {
+		Route::get('/admin' , array(
+				'as' => 'admin' ,
+				'uses' => 'AdminController@index'
+		));
+	//}
+
+
+	Route::get('/users' , array(
+		'as' => 'users-all',
+		'uses' => 'AccountController@index'
+	));
+
+	Route::get('/images-all' , array(
+		'as' => 'image-all',
+		'uses' => 'ImageController@index'
+	));
+
+	Route::get('/upload' , array(
+		'as' => 'upload',
+		'uses' => 'ImageController@indexUpload'
+	));
+
+	Route::post('upload' ,'ImageController@uploadImage');
 
 	/*
 		Change password (GET)
@@ -73,8 +132,31 @@ Route::group(array('before' => 'auth'),function(){
 		'uses' => 'AccountController@getSignOut'
 	));
 
-});
+	/*
+		Profile
+	*/
+	Route::get('/user/profile' , array(
+		'as' => 'profile-user',
+		'uses' => 'ProfileController@user'
+	));
 
+	/*
+		User Cart GET ( View )
+	*/
+	Route::get('/user/orders' ,array(
+		'as' => 'user-order',
+		'uses' => 'OrderController@getUserOrder'
+	));
+
+	/*
+		User Cart GET
+	*/
+	Route::get('/user/orders/get' ,array(
+		'as' => 'user-order-get',
+		'uses' => 'OrderController@getOrderToCartPop'
+	));
+
+});
 
 
 /*
@@ -135,8 +217,6 @@ Route::group( array('before' => 'guest'), function(){
 		'as' => 'account-create' ,
 		'uses' => 'AccountController@getCreate'
 	));
-
-
 
 
 });

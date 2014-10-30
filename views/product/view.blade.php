@@ -1,11 +1,8 @@
 @extends('layout.default')
 @section('content')
-<style type="text/css">
-	.field {
-		padding-left: 20px;
-	}
-</style>
-<div class='field'>
+@include('layout.menu_admin')
+<div style="margin-left:50px">
+	<br/>
 	<h1>{{ $product -> name }}</h1>
 	<p>{{ $product -> cost }}</p>
 	<p>{{ $product -> price }}</p>
@@ -14,5 +11,11 @@
 	<p>{{ $product -> size }}</p>
 	<p>{{ $product -> sex }}</p>
 	<p>{{ $product -> quantity }}</p>
-</div>
+
+<a href="{{ URL::route('product-edit-view',array($product -> id)) }}">Edit Product</a>
+{{ Form::open(array('url' => 'products/delete','method' => 'delete')) }}
+{{ Form::token() }}
+{{ Form::hidden('id',$product->id) }}
+{{ Form::submit('Delete') }}
+{{ Form::close() }}
 @endsection

@@ -1,6 +1,11 @@
 <?php
 class AccountController extends BaseController {
 
+	public function index() {
+		$users = User::all();
+		return View::make('account.index')->with('users', $users );
+	}
+
 	public function getSignOut() {
 		Auth::logout();
 		return Redirect::route('home')->with('success','Sign out');
@@ -63,9 +68,9 @@ class AccountController extends BaseController {
 				'first_name'			=> 'required',
 				'last_name'				=> 'required',
 				'sex'					=> 'required',
-				'identified_number'		=> 'required|numeric|min:13|max:13|unique:users',
+				'identified_number'		=> 'required|numeric|unique:users',
 				'address'				=> 'required',
-				'phone'					=> 'required|numeric'
+				'phone'					=> 'required'
 			)
 		);
 
@@ -94,6 +99,8 @@ class AccountController extends BaseController {
 
 
 				Auth::login($user);
+				$user->active = 1;
+				$user->save();
 				return Redirect::route('home')
 					   ->with('success', 'Your account has been created!');
 			}
