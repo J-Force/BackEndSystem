@@ -1,7 +1,7 @@
-@extends('layout.default')
+@extends('layout.newDefault')
 
 @section('content')
-	
+	@include('layout.newNav')
 	<table class="table table-striped users-table" align="center">
 	  	<tr>
   			<th> Email </th>

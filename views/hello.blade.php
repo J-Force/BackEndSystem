@@ -9,28 +9,28 @@
 <body id="page-top" data-spy="scroll" data-target=".navbar-custom">
 	<section class="hero" id="intro">
 		<div class="container">
-		<img src="/jf-shop/images/women.jpg" class="imgLeft"></img>
-		<img src="/jf-shop/images/man.jpg" class="imgRight"></img>
-		<div class="row">
-			<div class="col-md-12 text-right navicon">
-				<a id="nav-toggle" class="nav_slide_button" href="#"><span></span></a>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-8 col-md-offset-2 text-center inner">
-				<div class="animatedParent">
-					<h1 class="animated fadeInDown">J Force</h1>
-					<p class="animated fadeInUp">Description</p>
+			<img src="/jf-shop/images/women.jpg" class="imgLeft"></img>
+			<img src="/jf-shop/images/man.jpg" class="imgRight"></img>
+			<div class="row">
+				<div class="col-md-12 text-right navicon">
+					<a id="nav-toggle" class="nav_slide_button" href="#"><span></span></a>
 				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12 text-center">
-				<a href="women-catalog.html" class="women-btn slideleft btn-scroll">WOMEN</a>
-				<a href="#promotion" class="home-btn slidedown btn-scroll">HOME</a>
-				<a href="men-catalog.html" class="man-btn slideright btn-scroll">MAN</a>
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2 text-center inner">
+					<div class="animatedParent">
+						<h1 class="animated fadeInDown">J Force</h1>
+						<p class="animated fadeInUp">E-commerce Fashion Clothing Shopping</p>
+					</div>
+				</div>
 			</div>
-		</div>
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<a href="{{ URL::route('catalog-women') }}" class="women-btn slideleft btn-scroll">WOMEN</a>
+					<a href="#promotion" class="home-btn slidedown btn-scroll">HOME</a>
+					<a href="{{ URL::route('catalog-man') }}" class="man-btn slideright btn-scroll">MAN</a>
+				</div>
+			</div>
 		</div>
 	</section>
 	@include('layout.newNav')
@@ -235,33 +235,4 @@
 			</div>
 		</section>
 		<!-- /Section: contact -->
-		<footer>
-			<div class="container">
-				<div class="row">
-					<div class="col-md-6">
-						<ul class="footer-menu">
-							<li><a href="#">Home</a></li>
-							<li><a href="#">Press release</a></li>
-						</ul>
-					</div>
-					<div class="col-md-6 text-right">
-						<p>&copy;Copyright 2014 - Bocor. Designed by <a href="http://bootstraptaste.com">Bootstraptaste</a></p>
-					</div>
-				</div>
-			</div>
-		</footer>
-<!-- <div class="btn-group btn-group-justified">
-	<div class="btn-group btn-group-justified">
-	  <div class="btn-group">
-	  	<a href="{{ URL::route('catalog-man') }}">
-	    	<button type="button" class="btn btn-default btn-success">Men</button>
-	    </a>
-	  </div>
-	  <div class="btn-group btn-danger">
-	  	<a href="{{ URL::route('catalog-women') }}">
-	    	<button type="button" class="btn btn-default btn-primary">Women</button>
-	    </a>
-	  </div>
-	</div>
-</div> -->
 @endsection

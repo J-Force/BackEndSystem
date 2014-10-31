@@ -1,8 +1,8 @@
-@extends('layout.default')
+@extends('layout.newDefault')
 
 @section('content')
-
-	<div class="modal-dialog" style="margin-top: 150px;" >
+	@include('layout.newNav')
+	<div class="modal-dialog">
 
       <div class="modal-content">
 
