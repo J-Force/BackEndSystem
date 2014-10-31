@@ -20,12 +20,12 @@ class ImageController extends BaseController {
 		$file = Input::file('file');
 		// $filename = str_random(12);
 		//$filename = $file->getClientOriginalName();
-		$path = public_path().'/images/upload/';
+		$path = public_path().'/images/upload1';
 		$extension =$file->getClientOriginalExtension();
 		$filename = str_random(12).'.'.$extension;
 		$upload_success = $file->move($path,$filename);
 		// $path = $file->getRealPath();
-		$path = '/images/upload/'.$filename;
+		$path = '/images/upload1/'.$filename;
 		if( $upload_success ) {
 			Images::create(array(
 				'link'=>$path

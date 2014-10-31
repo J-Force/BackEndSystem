@@ -114,7 +114,7 @@ Route::group(array('before' => 'auth'),function(){
 		'uses' => 'ImageController@indexUpload'
 	));
 
-	Route::post('upload' ,'ImageController@uploadImage');
+	Route::post('user/upload' ,'ImageController@uploadImage');
 
 	/*
 		Change password (GET)

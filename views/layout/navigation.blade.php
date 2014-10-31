@@ -278,7 +278,34 @@ function buttonUp(){
 
     </div>
   </div>
+  <style>
+  .cart-pop {
+    padding-top: 30px;
+    text-align: center;
+    position: fixed;
+    top: 60px;
+    right: 30px;
+    width: 250px;
+    min-height: 300px;
+    border-radius: 10px;
+    background: #01A611;
+    border: 1px solid #01A611;
+    z-index: 10000;
+    display: block;
+  }
 
+  .cart-pop::after {
+    content: "";
+    position: absolute;
+    right:50px;
+    top: -15px;
+    border-style: solid;
+    border-width: 0px 15px 18px;
+    border-color: #01A611 transparent;
+    display: block;
+    width: 0;
+  }
+  </style>
   <script>
   $(document).ready(function(){
       $('.navbar-nav > li.cart').click(function() 
