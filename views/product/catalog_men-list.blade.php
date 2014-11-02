@@ -1,8 +1,20 @@
 @include('scripts.ajax-paging')
+<style type="text/css">
+  .sub-title{
+    font-size: 20px;
+    color: #ed4e6e;
+  }
+</style>
   <div id="content">
     {{ $products->links() }}
-    <div class="row">
+      <?php $i=0 ?>
+      <div class="row">
       @foreach($products as $product)
+        
+        @if($i % 3 == 0 )
+          </div><div class="row">
+        @endif
+
         <div class="col-md-4 grid cs-style-4">
           <?php
             $images = ProductImage::where('product_id', '=' ,$product->id )->take(1)->get();
@@ -16,8 +28,8 @@
               <div><img src="http://i1371.photobucket.com/albums/ag320/peterpanhihi/1_zpsfcda112b.jpg" alt="" width="360" height="400"></div>
               <figcaption>
                 <h3>ID : {{ $product->id }}</h3>
-                <h4>Size : {{ $product->size }}</h4>
-                <h4>Quantity : {{ $product->quantity }}</h4>
+                <div class="sub-title">Size : {{ $product->size }}</div>
+                <div class="sub-title">Quantity : {{ $product->quantity }}</div>
                 <a href="{{ URL::route('product',array($product -> id)) }}">Take a look</a>
               </figcaption>
             </figure>
@@ -38,7 +50,10 @@
             </div>
           </div>
         </div>
+        <?php $i++ ?>
       @endforeach
     </div>
-    {{ $products->links() }}
+    <div style="float:right">
+      {{ $products->links() }}
+    </div>
   </div> <!--end content-->

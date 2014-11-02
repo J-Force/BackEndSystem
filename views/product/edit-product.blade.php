@@ -1,8 +1,10 @@
-@extends('layout.default')
+@extends('layout.newDefault')
 
 @section('content') 
+<!-- Page Content ================================================== -->
+@include('layout.newNav')
 @include('layout.menu_admin')
-	<div style="margin-left:50px">
+	<div style="margin-left:100px">
 		<br/>
 		<h1>Edit Product : {{ $product->name }}</h1>
 		@if($errors->has())

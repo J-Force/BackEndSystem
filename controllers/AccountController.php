@@ -68,9 +68,9 @@ class AccountController extends BaseController {
 				'first_name'			=> 'required',
 				'last_name'				=> 'required',
 				'sex'					=> 'required',
-				'identified_number'		=> 'required|numeric|unique:users',
+				'identified_number'		=> 'required|digits:13|unique:users',
 				'address'				=> 'required',
-				'phone'					=> 'required'
+				'phone'					=> 'required|digits:10'
 			)
 		);
 
@@ -97,6 +97,8 @@ class AccountController extends BaseController {
 
 			if($user) {
 
+				$userRole = DB::table('roles')->where('name', '=', 'User')->pluck('id');
+				$user->roles()->attach($userRole);
 
 				Auth::login($user);
 				$user->active = 1;

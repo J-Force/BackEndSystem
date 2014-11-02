@@ -1,5 +1,8 @@
-@extends('layout.default')
+@extends('layout.newDefault')
 @section('content')
+
+@include('layout.newNav')
+
 	<table class="table table-striped news-table" align="center">
 	  	<tr>
   			<th> Title </th>

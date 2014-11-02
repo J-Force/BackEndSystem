@@ -1,8 +1,8 @@
-@extends('layout.default')
+@extends('layout.newDefault')
 
 @section('content')
-
-	<div class="modal-dialog" style="margin-top: 100px;">
+	@include('layout.newNav')
+	<div class="modal-dialog">
 
       <div class="modal-content">
 
@@ -73,7 +73,7 @@
 		          </br>
 		          {{ Form::textarea('address' , $user->address , array (
 		          			'rows' => 4,
-		          			'cols' => 90
+		          			'cols' => 55
 		             )) }}
 
 		          @if($errors->has('address'))
@@ -91,7 +91,7 @@
 		          </br>
 		          {{ Form::textarea('interest' , $user->interest , array (
 		          			'rows' => 4,
-		          			'cols' => 90
+		          			'cols' => 55
 		             )) }}
 		          </br></br>
 		          

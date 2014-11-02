@@ -2,10 +2,6 @@
 
 @section('content')
 
-@if(Auth::check())
-	
-@endif
-
 <body id="page-top" data-spy="scroll" data-target=".navbar-custom">
 	<section class="hero" id="intro">
 		<div class="container">
@@ -71,6 +67,52 @@
 			</div>
 		</section>
 		<!-- /Section: promotion -->
+		<!-- Section: hot items -->
+		<section id="hotitems" class="home-section color-dark text-center bg-white">
+			<div class="container marginbot-50">
+				<div class="row">
+					<div class="col-lg-8 col-lg-offset-2">
+						<div>
+							<div class="animatedParent">
+								<div class="section-heading text-center">
+									<h2 class="h-bold animated bounceInDown">HOT ITEMS</h2>
+									<div class="divider-header"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="row animatedParent">
+					<div class="col-sm-12 col-md-12 col-lg-12" >
+						<div class="row gallery-item">
+							<div class="col-md-3 animated fadeInUp">
+								<a href="/jf-shop/images/works/1.jpg" title="DOUBLE BREASTED COAT / CHECKED SHIRT/ FLARED MINI DRESS WITH POCKETS" data-lightbox-gallery="gallery1" data-lightbox-hidpi="img/works/1@2x.jpg">
+								<img src="/jf-shop/images/works/1.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/1.1.jpg'"onmouseout="this.src='/jf-shop/images/works/1.jpg'" />
+								</a>
+							</div>
+							<div class="col-md-3 animated fadeInUp slow">
+								<a href="/jf-shop/images/works/2.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="img/works/1@2x.jpg">
+								<img src="/jf-shop/images/works/2.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/2.1.jpg'"onmouseout="this.src='/jf-shop/images/works/2.jpg'" />
+								</a>
+							</div>
+							<div class="col-md-3 animated fadeInUp slower">
+								<a href="/jf-shop/images/works/3.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="img/works/1@2x.jpg">
+								<img src="/jf-shop/images/works/3.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/3.1.jpg'"onmouseout="this.src='/jf-shop/images/works/3.jpg'" />
+								</a>
+							</div>
+							<div class="col-md-3 animated fadeInUp">
+								<a href="/jf-shop/images/works/4.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="img/works/1@2x.jpg">
+								<img src="/jf-shop/images/works/4.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/4.1.jpg'"onmouseout="this.src='/jf-shop/images/works/4.jpg'" />
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- /Section: hot items -->
 		<!-- Section: services -->
 		<section id="service" class="home-section color-dark bg-gray">
 			<div class="container marginbot-50">
@@ -144,53 +186,7 @@
 			</div>
 		</section>
 		<!-- /Section: services -->
-		<!-- Section: works -->
-		<section id="works" class="home-section color-dark text-center bg-white">
-			<div class="container marginbot-50">
-				<div class="row">
-					<div class="col-lg-8 col-lg-offset-2">
-						<div>
-							<div class="animatedParent">
-								<div class="section-heading text-center">
-									<h2 class="h-bold animated bounceInDown">What we have done</h2>
-									<div class="divider-header"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="container">
-				<div class="row animatedParent">
-					<div class="col-sm-12 col-md-12 col-lg-12" >
-						<div class="row gallery-item">
-							<div class="col-md-3 animated fadeInUp">
-								<a href="img/works/1.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="img/works/1@2x.jpg">
-								<img src="/jf-shop/images/works/1.jpg" class="img-responsive" alt="img">
-								</a>
-							</div>
-							<div class="col-md-3 animated fadeInUp slow">
-								<a href="img/works/2.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="img/works/1@2x.jpg">
-								<img src="/jf-shop/images/works/2.jpg" class="img-responsive" alt="img">
-								</a>
-							</div>
-							<div class="col-md-3 animated fadeInUp slower">
-								<a href="img/works/3.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="img/works/1@2x.jpg">
-								<img src="/jf-shop/images/works/3.jpg" class="img-responsive" alt="img">
-								</a>
-							</div>
-							<div class="col-md-3 animated fadeInUp">
-								<a href="img/works/4.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="img/works/1@2x.jpg">
-								<img src="/jf-shop/images/works/4.jpg" class="img-responsive" alt="img">
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<!-- /Section: works -->
-		<!-- Section: contact -->
+		<!-- Section: contact
 		<section id="contact" class="home-section nopadd-bot color-dark bg-gray text-center">
 			<div class="container marginbot-50">
 				<div class="row">
@@ -234,5 +230,5 @@
 				</div>
 			</div>
 		</section>
-		<!-- /Section: contact -->
+		/Section: contact -->
 @endsection

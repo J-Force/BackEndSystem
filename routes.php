@@ -16,23 +16,9 @@ Route::get('/', array(
 	'uses' => 'HomeController@home')
 );
 
-Route::get('/products' , array('as' => 'products' , 'uses' => 'ProductController@showProduct') );
+Route::get('/news', array('as' => 'news', 'uses' => 'NewsController@getAll') );
 
 Route::get('/products/{id}', array('as' => 'product' , 'uses' => 'ProductController@view') );
-
-Route::get('/products-add', array('as' => 'product-add-view' , 'uses' => 'ProductController@showAddProduct') );
-
-Route::post('products/create', array('before' => 'csrf','uses' => 'ProductController@addProduct'));
-
-Route::get('/products/{id}/edit', array('as' => 'product-edit-view' , 'uses' => 'ProductController@showEditProduct'));
-
-Route::put('products/update', array('before' => 'csrf','uses' => 'ProductController@editProduct'));
-
-Route::delete('products/delete', array('before' => 'csrf','uses' => 'ProductController@deleteProduct'));
-
-Route::get('/news', array('as' => 'news', 'uses' => 'NewsController@get') );
-
-Route::get('/products/{id}/add-image', array('as' => 'product-add-image' , 'uses' => 'ProductController@showAddImage'));
 
 /*
 	
@@ -76,6 +62,9 @@ Route::group(array('before' => 'auth'),function(){
 			'uses' => 'ProfileController@postUpdate'
 		));
 
+		/*
+			Add to Cart
+		*/
 		Route::post('/user/orders/add_cart' ,array(
 			'as' => 'user-order-add',
 			'uses' => 'OrderController@addCart'
@@ -86,17 +75,48 @@ Route::group(array('before' => 'auth'),function(){
 			'uses' => 'OrderController@removeCart'
 		));
 
+
+		/*
+			Increase Order for Ajax
+		*/
+		Route::post('/user/orders/increase' ,array(
+			'as' => 'user-order-increase',
+			'uses' => 'OrderController@increaseOrder'
+		));
+
+		/*
+			Decrease Order for Ajax
+		*/
+		Route::post('/user/orders/decrease' ,array(
+			'as' => 'user-order-decrease',
+			'uses' => 'OrderController@decreaseOrder'
+		));
+
 	});
 
 	/*
 		For Admin
 	*/
-	//if(Entrust::hasRole('Admin')) {
+	if(Entrust::hasRole('Admin')) {
 		Route::get('/admin' , array(
 				'as' => 'admin' ,
 				'uses' => 'AdminController@index'
 		));
-	//}
+
+		Route::get('/products' , array('as' => 'products' , 'uses' => 'ProductController@showProduct') );
+
+		Route::get('/products-add', array('as' => 'product-add-view' , 'uses' => 'ProductController@showAddProduct') );
+
+		Route::post('products/create', array('before' => 'csrf','uses' => 'ProductController@addProduct'));
+
+		Route::get('/products/{id}/edit', array('as' => 'product-edit-view' , 'uses' => 'ProductController@showEditProduct'));
+
+		Route::put('products/update', array('before' => 'csrf','uses' => 'ProductController@editProduct'));
+
+		Route::delete('products/delete', array('before' => 'csrf','uses' => 'ProductController@deleteProduct'));
+
+		Route::get('/products/{id}/add-image', array('as' => 'product-add-image' , 'uses' => 'ProductController@showAddImage'));
+	}
 
 
 	Route::get('/users' , array(
@@ -149,7 +169,7 @@ Route::group(array('before' => 'auth'),function(){
 	));
 
 	/*
-		User Cart GET
+		User Cart-pop GET
 	*/
 	Route::get('/user/orders/get' ,array(
 		'as' => 'user-order-get',

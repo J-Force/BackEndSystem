@@ -127,7 +127,8 @@
 </style>
 <script type="text/javascript">
  $(document).ready(function(){
-  $(".menu-button").click(function(){
+  $(".menu-button").click(function(e){
+    e.preventDefault();
    $(".menu-bar").toggleClass( "open_left_menu" );
   })
  })

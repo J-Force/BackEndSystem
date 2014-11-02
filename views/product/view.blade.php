@@ -1,7 +1,8 @@
-@extends('layout.default')
+@extends('layout.newDefault')
 @section('content')
+@include('layout.newNav')
 @include('layout.menu_admin')
-<div style="margin-left:50px">
+<div style="margin-left:100px">
 	<br/>
 	<h1>{{ $product -> name }}</h1>
 	<p>{{ $product -> cost }}</p>
@@ -18,4 +19,5 @@
 {{ Form::hidden('id',$product->id) }}
 {{ Form::submit('Delete') }}
 {{ Form::close() }}
+<br>
 @endsection

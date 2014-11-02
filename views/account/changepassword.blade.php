@@ -1,7 +1,8 @@
-@extends('layout.default')
+@extends('layout.newDefault')
 
 @section('content')
-	<div class="modal-dialog" style="margin-top: 100px;">
+	@include('layout.newNav')
+	<div class="modal-dialog">
 
 	      <div class="modal-content">
 
@@ -15,34 +16,35 @@
 
 			<form action="{{ URL::route('account-change-password-post')}}" method="post">
 				<div class="modal-body" id="changepassword_details">
-				<div class="field">
-					Current password: 
-					<input type="password" class="form-control" name="current_password">
-					@if($errors->has('current_password'))
-						{{ $errors->first('current_password') }}
-					@endif
-				</div>
+					<div class="field">
+						Current password: 
+						<input type="password" class="form-control" name="current_password">
+						@if($errors->has('current_password'))
+							{{ $errors->first('current_password') }}
+						@endif
+					</div>
 
-				<div class="field">
-					New password: 
-					<input type="password" class="form-control" name="password">
-					@if($errors->has('password'))
-						{{ $errors->first('password') }}
-					@endif
-				</div>
+					<div class="field">
+						New password: 
+						<input type="password" class="form-control" name="password">
+						@if($errors->has('password'))
+							{{ $errors->first('password') }}
+						@endif
+					</div>
 
-				<div class="field">
-					New password confirmation: 
-					<input type="password" class="form-control" name="password_confirmation">
-					@if($errors->has('password_confirmation'))
-						{{ $errors->first('password_confirmation') }}
-					@endif
-				</div>
+					<div class="field">
+						New password confirmation: 
+						<input type="password" class="form-control" name="password_confirmation">
+						@if($errors->has('password_confirmation'))
+							{{ $errors->first('password_confirmation') }}
+						@endif
+					</div>
 
-				</br>
-				<input type="submit" class="btn btn-success" value="Change password">
-				{{ Form::token() }}
+					</br>
+					<input type="submit" class="btn btn-success" value="Change password">
+					{{ Form::token() }}
+		  		</div><!-- /.modal-content -->
 			</form>
-		  </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+    	</div><!-- /.modal-dialog -->
+	</div>
 @endsection

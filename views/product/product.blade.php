@@ -1,7 +1,8 @@
-@extends('layout.default')
+@extends('layout.newDefault')
 @section('content')
+@include('layout.newNav')
 @include('layout.menu_admin')
-	<table class="table table-striped users-table" align="center">
+	<table class="table table-striped users-table" style="margin-left:30%" align="center">  
 	  	<tr>
   			<th> Product Name </th>
   			<th> Price </th>

@@ -27,8 +27,11 @@ class ProductController extends BaseController {
 		$products = DB::table('products')
 					->where('sex', 'F')
                     ->orderBy('name', 'desc')
-                    ->take(5)
-                    ->get();
+                    ->take(10)
+                    ->paginate(9);
+        if (Request::ajax()) {
+            return Response::json(View::make('product.catalog_women-list', array('products' => $products))->render());
+        }
 		return View::make('product.catalog_women')->with('products',$products);
 	}
 

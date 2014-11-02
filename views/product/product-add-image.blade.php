@@ -1,6 +1,8 @@
-@extends('layout.default')
+@extends('layout.newDefault')
 
 @section('content') 
+<!-- Page Content ================================================== -->
+@include('layout.newNav') 
 @include('layout.menu_admin')
 
 <style type="text/css">

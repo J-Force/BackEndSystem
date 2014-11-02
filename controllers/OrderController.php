@@ -5,15 +5,18 @@ class OrderController extends BaseController {
 		$user = Auth::user();
 
 		if($user){
-
-			$orders = Order::where('user_id' , '=' , $user->id )
-					  ->where('status' , '=' , 0)
-					  ->get();
+			$orders = DB::table('orders')
+			                 ->select('id','product_id', DB::raw('count(*) as quantity'))
+			                 ->where('user_id' ,'=' , $user->id)
+			                 ->where('status' ,'=' ,0)
+			                 ->groupBy('product_id')
+			                 ->get();
 
 			foreach ($orders as $order)
 			{
 			    $product = Product::find($order->product_id);
 			    $order->product_name = $product->name;
+			    $order->price = $product->price;
 			}
 			
 			return View::make('order.show')->with('orders', $orders);
@@ -28,14 +31,15 @@ class OrderController extends BaseController {
 			$orders = DB::table('orders')
                  ->select('product_id', DB::raw('count(*) as quantity'))
                  ->where('user_id' ,'=' , $user->id)
+                 ->where('status' ,'=' ,0)
                  ->groupBy('product_id')
-                 ->take(5)
                  ->get();
 
 			foreach ($orders as $order)
 			{
 			    $product = Product::find($order->product_id);
 			    $order->product_name = $product->name;
+			    $order->price = $product->price;
 			}
 
 			return $orders;
@@ -65,15 +69,49 @@ class OrderController extends BaseController {
 		}
 	}
 
+	public function increaseOrder() {
+
+		if(Auth::check()) {
+			$user = Auth::user();
+
+			if($user) {
+				Order::create(array(
+				   	'user_id' => $user->id, 
+				   	'product_id' => Input::get('product_id'),
+				   	'status' => 0,
+				));
+			}
+		}
+
+	}
+
+	public function decreaseOrder() {
+
+		if(Auth::check()) {
+			$user = Auth::user();
+
+			if($user) {
+
+				$order = DB::table('orders')
+				         ->where('product_id' ,'=' , Input::get('product_id'))
+				         ->first();
+
+				if($order) {
+					Order::destroy($order->id);
+				}
+
+			}
+		}
+	}
+
 	public function removeCart(){
 
 		$user = Auth::user();
 
 		if($user){
 
-			$order_id = Input::get('order_id');
-			Order::destroy($order_id);
-			
+			$product_id = Input::get('product_id');
+			DB::table('orders')->where('product_id' , '=' , $product_id )->delete();
 
 		}
 		
