@@ -24,7 +24,7 @@
 				<div class="col-md-12 text-center">
 					<a href="{{ URL::route('catalog-women') }}" class="women-btn slideleft btn-scroll">WOMEN</a>
 					<a href="#promotion" class="home-btn slidedown btn-scroll">HOME</a>
-					<a href="{{ URL::route('catalog-man') }}" class="man-btn slideright btn-scroll">MAN</a>
+					<a href="{{ URL::route('catalog-man') }}" class="man-btn slideright btn-scroll">MEN</a>
 				</div>
 			</div>
 		</div>
@@ -60,7 +60,7 @@
 							  <div class="col-md-6"><img src="/jf-shop/images/promotion6.jpg"/></div>
 							  <div class="col-md-6"><img src="/jf-shop/images/promotion7.jpg"/></div>
 							</div>
-							<a href="#service" class="btn btn-skin btn-scroll">What we do</a>
+							<a href="#hotitems" class="btn btn-skin btn-scroll margintop-20">HOT ITEMS</a>
 						</div>
 					</div>
 				</div>
@@ -85,29 +85,74 @@
 			</div>
 			<div class="container">
 				<div class="row animatedParent">
-					<div class="col-sm-12 col-md-12 col-lg-12" >
-						<div class="row gallery-item">
-							<div class="col-md-3 animated fadeInUp">
-								<a href="/jf-shop/images/works/1.jpg" title="DOUBLE BREASTED COAT / CHECKED SHIRT/ FLARED MINI DRESS WITH POCKETS" data-lightbox-gallery="gallery1" data-lightbox-hidpi="img/works/1@2x.jpg">
-								<img src="/jf-shop/images/works/1.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/1.1.jpg'"onmouseout="this.src='/jf-shop/images/works/1.jpg'" />
-								</a>
-							</div>
-							<div class="col-md-3 animated fadeInUp slow">
-								<a href="/jf-shop/images/works/2.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="img/works/1@2x.jpg">
-								<img src="/jf-shop/images/works/2.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/2.1.jpg'"onmouseout="this.src='/jf-shop/images/works/2.jpg'" />
-								</a>
-							</div>
-							<div class="col-md-3 animated fadeInUp slower">
-								<a href="/jf-shop/images/works/3.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="img/works/1@2x.jpg">
-								<img src="/jf-shop/images/works/3.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/3.1.jpg'"onmouseout="this.src='/jf-shop/images/works/3.jpg'" />
-								</a>
-							</div>
-							<div class="col-md-3 animated fadeInUp">
-								<a href="/jf-shop/images/works/4.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="img/works/1@2x.jpg">
-								<img src="/jf-shop/images/works/4.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/4.1.jpg'"onmouseout="this.src='/jf-shop/images/works/4.jpg'" />
-								</a>
+					<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+						<div class="col-sm-12 col-md-12 col-lg-12" >
+							<ol class="carousel-indicators">
+									<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+									<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+							</ol>
+							<div class="carousel-inner">
+								<div class="item active">
+									<div class="row gallery-item">
+									
+										<div class="col-md-3 animated fadeInUp">
+											<a href="/jf-shop/images/works/1.jpg" title="DOUBLE BREASTED COAT / CHECKED SHIRT/ FLARED MINI DRESS WITH POCKETS" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src="/jf-shop/images/works/1.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/1.1.jpg'"onmouseout="this.src='/jf-shop/images/works/1.jpg'" />
+											</a>
+										</div>
+										<div class="col-md-3 animated fadeInUp slow">
+											<a href="/jf-shop/images/works/2.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src="/jf-shop/images/works/2.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/2.1.jpg'"onmouseout="this.src='/jf-shop/images/works/2.jpg'" />
+											</a>
+										</div>
+										<div class="col-md-3 animated fadeInUp slower">
+											<a href="/jf-shop/images/works/3.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src="/jf-shop/images/works/3.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/3.1.jpg'"onmouseout="this.src='/jf-shop/images/works/3.jpg'" />
+											</a>
+										</div>
+										<div class="col-md-3 animated fadeInUp">
+											<a href="/jf-shop/images/works/4.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src="/jf-shop/images/works/4.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/4.1.jpg'"onmouseout="this.src='/jf-shop/images/works/4.jpg'" />
+											</a>
+										</div>
+									</div>
+									<!--/row-->
+								</div>
+								<!--/item-->
+								<div class="item">
+			                        <div class="row gallery-item">
+			                        	<div class="col-md-3 animated fadeInUp">
+											<a href="/jf-shop/images/works/tmp.jpg" title="TEMPLATE" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src="/jf-shop/images/works/tmp.jpg" alt="Image" class="img-responsive">
+											</a>
+										</div>
+										<div class="col-md-3 animated fadeInUp slow">
+											<a href="/jf-shop/images/works/tmp.jpg" title="TEMPLATE" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src="/jf-shop/images/works/tmp.jpg" alt="Image" class="img-responsive">
+											</a>
+										</div>
+										<div class="col-md-3 animated fadeInUp slower">
+											<a href="/jf-shop/images/works/tmp.jpg" title="TEMPLATE" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src="/jf-shop/images/works/tmp.jpg" alt="Image" class="img-responsive">
+											</a>
+										</div>
+										<div class="col-md-3 animated fadeInUp">
+											<a href="/jf-shop/images/works/tmp.jpg" title="TEMPLATE" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src="/jf-shop/images/works/tmp.jpg" alt="Image" class="img-responsive">
+											</a>
+										</div>
+			                        </div>
+			                        <!--/row-->
+			                    </div>
+			                    <!--/item-->
 							</div>
 						</div>
+						<a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+							<span class="glyphicon glyphicon-chevron-left" style="color:#3DC9B3;margin-top:150px;"></span>
+						</a>
+						<a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+							<span class="glyphicon glyphicon-chevron-right" style="color:#3DC9B3;margin-top:150px;"></span>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -134,13 +179,13 @@
 							<div class="animated rotateInDownLeft">
 								<div class="service-box">
 									<div class="service-icon">
-										<span class="fa fa-laptop fa-2x"></span> 
+										<img class="img-circle" src="/jf-shop/images/works/news1.jpg" style="width: 200px; height: 200px;">
 									</div>
 									<div class="service-desc">
-										<h5>Web Design</h5>
+										<h5>JOIN THE CLUB</h5>
 										<div class="divider-header"></div>
 										<p>
-											Ad denique euripidis signiferumque vim, iusto admodum quo cu. No tritani neglegentur mediocritatem duo.
+											Simply tell us where you'd like the clothes delivered then sit back and relax.
 										</p>
 										<a href="#" class="btn btn-skin">Learn more</a>
 									</div>
@@ -151,13 +196,13 @@
 							<div class="animated rotateInDownLeft slow">
 								<div class="service-box">
 									<div class="service-icon">
-										<span class="fa fa-camera fa-2x"></span> 
+										<img class="img-circle" src="/jf-shop/images/works/news2.jpg" alt="Generic placeholder image" style="width: 200px; height: 200px;">
 									</div>
 									<div class="service-desc">
-										<h5>Photography</h5>
+										<h5>DESIGN</h5>
 										<div class="divider-header"></div>
 										<p>
-											Ad denique euripidis signiferumque vim, iusto admodum quo cu. No tritani neglegentur mediocritatem duo.
+											We design the best wearing clothes using the highest quality fabrics.
 										</p>
 										<a href="#" class="btn btn-skin">Learn more</a>
 									</div>
@@ -168,13 +213,13 @@
 							<div class="animated rotateInDownLeft slower">
 								<div class="service-box">
 									<div class="service-icon">
-										<span class="fa fa-code fa-2x"></span> 
+										<img class="img-circle" src="/jf-shop/images/works/news3.jpg" alt="Generic placeholder image" style="width: 200px; height: 200px;">
 									</div>
 									<div class="service-desc">
-										<h5>Graphic design</h5>
+										<h5>RECEIVE PRODUCTS</h5>
 										<div class="divider-header"></div>
 										<p>
-											Ad denique euripidis signiferumque vim, iusto admodum quo cu. No tritani neglegentur mediocritatem duo.
+											You get a fresh products delivered to your door. Hit the town cowboy.
 										</p>
 										<a href="#" class="btn btn-skin">Learn more</a>
 									</div>
@@ -185,6 +230,8 @@
 				</div>
 			</div>
 		</section>
+		<!-- /Section: News -->
+		
 		<!-- /Section: services -->
 		<!-- Section: contact
 		<section id="contact" class="home-section nopadd-bot color-dark bg-gray text-center">

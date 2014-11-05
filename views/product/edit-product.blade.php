@@ -11,6 +11,12 @@
 		<ul>
 			{{ $errors->first('name','<li>:message</li>') }}
 			{{ $errors->first('description','<li>:message</li>') }}
+			{{ $errors->first('cost','<li>:message</li>') }}
+			{{ $errors->first('price','<li>:message</li>') }}
+			{{ $errors->first('weight','<li>:message</li>') }}
+			{{ $errors->first('size','<li>:message</li>') }}
+			{{ $errors->first('sex','<li>:message</li>') }}
+			{{ $errors->first('quantity','<li>:message</li>') }}
 		</ul>
 		@endif
 		{{ Form::open(array('url' => 'products/update', 'method' => 'put')) }}
@@ -22,6 +28,30 @@
 		<p>
 			{{ Form::label('description') }}<br/>
 			{{ Form::textarea('description',$product->description) }}
+		</p>
+		<p>
+			{{ Form::label('cost : example 10.00') }}<br/>
+			{{ Form::text('cost',$product->cost) }}
+		</p>
+		<p>
+			{{ Form::label('price : example 10.00') }}<br/>
+			{{ Form::text('price',$product->price) }}
+		</p>
+		<p>
+			{{ Form::label('weight : example 10.00') }}<br/>
+			{{ Form::text('weight',$product->weight) }}
+		</p>
+		<p>
+			{{ Form::label('size : example XL') }}<br/>
+			{{ Form::text('size',$product->size) }}
+		</p>
+		<p>
+			{{ Form::label('sex : M or F') }}<br/>
+			{{ Form::text('sex',$product->sex) }}
+		</p>
+		<p>
+			{{ Form::label('quantity : example 10') }}<br/>
+			{{ Form::text('quantity',$product->quantity) }}
 		</p>
 		{{ Form::hidden('id',$product->id) }}
 		<p>

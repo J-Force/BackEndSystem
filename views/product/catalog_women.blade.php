@@ -3,7 +3,6 @@
 @section('content') 
 <!-- Page Content ================================================== -->
 @include('layout.newNav')
-@include('scripts.ajax-paging')
   <section id="about" class="color-dark bg-white">
       <div class="container margintop-50 marginbot-50">
         <div class="row">
@@ -49,25 +48,42 @@
           </div>
 
                 </div>
-                <ol class="breadcrumb">
-                  <li><a href="{{ URL::route('home') }}">Home</a></li>
-                  <li class="active">Women</li>
-                </ol>
+                <ul class="nav nav-tabs" role="tablist">
+                  
+                  <li role="presentation"><a href="{{ URL::route('home') }}">Home</a></li>
+                  <li role="presentation"><a href="{{ URL::route('catalog-man') }}">Men</a></li>
+                  <li role="presentation" class="active"><a href="{{ URL::route('catalog-women') }}">Women</a></li>
+                </ul>
+                <ul class="nav nav-pills" role="tablist">
+                  <li role="presentation" class="active"><a href="{{ URL::route('catalog-man') }}">All</a></li>
+                  <li role="presentation"><a href="#">Dresses</a></li>
+                  <li role="presentation"><a href="#">Coats</a></li>
+                  <li role="presentation"><a href="#">Jackets</a></li>
+                  <li role="presentation"><a href="#">Cardigans and sweaters</a></li>
+                  <li role="presentation"><a href="#">Blouses and shirts</a></li>
+                  <li role="presentation"><a href="#">T-shirts and tops</a></li>
+                  <li role="presentation"><a href="#">Trousers</a></li>
+                  <li role="presentation"><a href="#">Jeans</a></li>
+                  <li role="presentation"><a href="#">Skirts</a></li>
+                  <li role="presentation"><a href="#">Shorts</a></li>
+                  <li role="presentation"><a href="#">Jumpsuits</a></li>
+                  <li role="presentation"><a href="#">Intimates</a></li>
+                  <li role="presentation"><a href="#">Sport</a></li>
+                  <li role="presentation"><a href="#">Shoes</a></li>
+                  <li role="presentation"><a href="#">Bags</a></li>
+                  <li role="presentation"><a href="#">Jewellery</a></li>
+                  <li role="presentation"><a href="#">Leather goods</a></li>
+                  <li role="presentation"><a href="#">Belts</a></li>
+                  <li role="presentation"><a href="#">Hats and caps</a></li>
+                  <li role="presentation"><a href="#">Foulards and scarves</a></li>
+                  <li role="presentation"><a href="#">Gloves</a></li>
+                  <li role="presentation"><a href="#">Sunglasses</a></li>
+                  <li role="presentation"><a href="#">Other</a></li>
+                </ul>
+                <br>
 <!-- ROW 1 -->
                 @include('product.catalog_women-list')
     </div>
-<script>
 
-  $(function() {
-    $(".shop-cart").click(function(e) {
-      e.preventDefault();
-      $(".badge").html( parseInt($(".badge").html()) + 1 );
-        $.post("/jf-shop/user/orders/add_cart", { product_id:$(this).attr("id") }, function(res) {
-         
-      });
-    });
-  });
-
-</script>
 
 @endsection

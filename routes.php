@@ -20,6 +20,8 @@ Route::get('/news', array('as' => 'news', 'uses' => 'NewsController@getAll') );
 
 Route::get('/products/{id}', array('as' => 'product' , 'uses' => 'ProductController@view') );
 
+Route::get('/products/show/{id}', array('as' => 'product-id', 'uses' => 'ProductController@showDetail'));
+
 /*
 	
 */
@@ -97,26 +99,30 @@ Route::group(array('before' => 'auth'),function(){
 	/*
 		For Admin
 	*/
-	if(Entrust::hasRole('Admin')) {
-		Route::get('/admin' , array(
-				'as' => 'admin' ,
-				'uses' => 'AdminController@index'
-		));
+	Route::get('/admin' , array(
+			'as' => 'admin' ,
+			'uses' => 'AdminController@index'
+	));
 
-		Route::get('/products' , array('as' => 'products' , 'uses' => 'ProductController@showProduct') );
+	Route::get('/products' , array('as' => 'products' , 'uses' => 'ProductController@showProduct') );
 
-		Route::get('/products-add', array('as' => 'product-add-view' , 'uses' => 'ProductController@showAddProduct') );
+	Route::get('/products-add', array('as' => 'product-add-view' , 'uses' => 'ProductController@showAddProduct') );
 
-		Route::post('products/create', array('before' => 'csrf','uses' => 'ProductController@addProduct'));
+	Route::post('products/create', array('before' => 'csrf','uses' => 'ProductController@addProduct'));
 
-		Route::get('/products/{id}/edit', array('as' => 'product-edit-view' , 'uses' => 'ProductController@showEditProduct'));
+	Route::get('/products/{id}/edit', array('as' => 'product-edit-view' , 'uses' => 'ProductController@showEditProduct'));
 
-		Route::put('products/update', array('before' => 'csrf','uses' => 'ProductController@editProduct'));
+	Route::put('products/update', array('before' => 'csrf','uses' => 'ProductController@editProduct'));
 
-		Route::delete('products/delete', array('before' => 'csrf','uses' => 'ProductController@deleteProduct'));
+	Route::delete('products/delete', array('before' => 'csrf','uses' => 'ProductController@deleteProduct'));
 
-		Route::get('/products/{id}/add-image', array('as' => 'product-add-image' , 'uses' => 'ProductController@showAddImage'));
-	}
+	Route::get('/products/{id}/add-image', array('as' => 'product-add-image' , 'uses' => 'ProductController@showAddImage'));
+
+	Route::post('products/add-image', array('before' => 'csrf','uses' => 'ProductController@addProductImage'));
+
+	Route::get('/products/{id}/remove-image', array('as' => 'product-remove-image','uses' => 'ProductController@showRemoveImage'));
+
+	Route::delete('products/remove-image', array('before' => 'csrf','uses' => 'ProductController@removeProductImage'));
 
 
 	Route::get('/users' , array(
@@ -135,6 +141,8 @@ Route::group(array('before' => 'auth'),function(){
 	));
 
 	Route::post('user/upload' ,'ImageController@uploadImage');
+
+	Route::delete('image/delete', array('before' => 'csrf','uses' => 'ImageController@deleteImage'));
 
 	/*
 		Change password (GET)

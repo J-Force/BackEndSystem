@@ -7,6 +7,31 @@
 	    overflow: hidden;
 	}
 </style>
+<script type="text/javascript">
+
+	$(document).ready(function(){
+
+		$('.remove').click(function(e){
+
+		    e.preventDefault();
+
+		    var r = confirm('Do you want to remove this order line?');
+
+		    if( r ) {
+	     		$.post( "/jf-shop/user/orders/remove_cart", 
+	     			{ 
+	     				product_id:  $(this).attr("id")  
+	     			}, function(res,status) {
+	     				
+				});
+
+	     		$(('.order_des_')+ $(this).attr("id")).hide();
+     		}
+			
+ 		});
+
+	});
+</script>
 	
 	<div id="content">
 		{{ $images->links() }}
@@ -23,13 +48,19 @@
 		            <div class="caption">
 	                    <h3>{{ $image -> id }}</h3>
 	                    <p>{{ $image -> link }}</p>
-	                    <p><a href="/jf-shop{{ $image -> link }}" class="btn btn-primary">Full Size</a> <a href="#" class="btn btn-danger">Remove</a></p>
+	                    <p><a href="/jf-shop{{ $image -> link }}" class="btn btn-primary">Full Size</a> 
+	                    {{ Form::open(array('url' => 'image/delete','method' => 'delete')) }}
+			            {{ Form::token() }}
+			            {{ Form::hidden('id',$image->id) }}
+			            {{ Form::submit('Remove',array('class'=>'btn btn-danger')) }}
+			            {{ Form::close() }}
+			        	</p>
 		            </div>
 		        </div>
 	        </div>
 	        @endforeach
 	    </div>
-	    {{ $images->links() }}
+	    <div style="float:right">{{ $images->links() }}</div>
 	</div>
 	
 		    

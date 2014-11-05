@@ -2,32 +2,37 @@
 @section('content')
 @include('layout.newNav')
 @include('layout.menu_admin')
-	<table class="table table-striped users-table" style="margin-left:30%" align="center">  
+	<table class="table table-striped" style="margin-left:7%;width:90%" align="center">  
 	  	<tr>
+        <th><center> Product ID </center></th>
   			<th> Product Name </th>
-  			<th> Price </th>
-  			<th> Gender </th>
-  			<th> Quantity </th>
-        <th> Edit </th>
-        <th> Delete </th>
-        <th> Add Image </th>
+  			<th><center> Price </center></th>
+  			<th><center> Gender </center></th>
+  			<th><center> Quantity </center></th>
+        <th><center> Edit </center></th>   
+        <th><center> Add Image </center></th>
+        <th><center> Remove Image </center></th>
+        <th><center> Delete Product </center></th>
 
   		</tr>
 	@foreach($products as $product)
   		<tr>
-  			<td><a href="{{ URL::route('product',array($product -> id)) }}">{{ $product->name }}</a></td>
-  			<td>{{ $product->price  }}</td>
-  			<td>{{ $product->sex }}</td>
-  			<td>{{ $product->quantity }}</td>
-        <td><a href="{{ URL::route('product-edit-view',array($product -> id)) }}">Edit</a></td>
-        <td>
+        <td><center>{{ $product->id  }}</center></td>
+  			<td><a href="{{ URL::route('product-id',array($product -> id)) }}">{{ $product->name }}</a></td>
+  			<td><center>{{ $product->price  }}</center></td>
+  			<td><center>{{ $product->sex }}</center></td>
+  			<td><center>{{ $product->quantity }}</center></td>
+        <td><center><a href="{{ URL::route('product-edit-view',array($product -> id)) }}">Edit</a></center></td>
+        
+         <td><center><a href="{{ URL::route('product-add-image',array($product -> id)) }}">Add Image</a></center></td>
+         <td><center><a href="{{ URL::route('product-remove-image',array($product -> id)) }}">Remove Image</a></center></td>
+         <td><center>
           {{ Form::open(array('url' => 'products/delete','method' => 'delete')) }}
           {{ Form::token() }}
           {{ Form::hidden('id',$product->id) }}
           {{ Form::submit('Delete') }}
           {{ Form::close() }}
-        </td>
-         <td><a href="{{ URL::route('product-add-image',array($product -> id)) }}">Add Image</a></td>
+        </center></td>
   		</tr>
   	@endforeach
 	</table>

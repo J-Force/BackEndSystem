@@ -1,19 +1,18 @@
 @include('scripts.ajax-paging')
+
 <style type="text/css">
   .sub-title{
     font-size: 20px;
     color: #ed4e6e;
   }
 </style>
-    <div id="content">
-      <?php $i=0 ?>
-      <div class="row">
+  <div id="content">
+    <?php $i=0 ?>
+    <div class="row">
       @foreach($products as $product)
-        
-        @if($i % 3 == 0 )
+       @if($i % 3 == 0 )
           </div><div class="row">
         @endif
-
         <div class="col-md-4 grid cs-style-4">
           <?php
             $ids = ProductImage::where('product_id', '=' ,$product->id )->lists('image_id');
@@ -24,12 +23,15 @@
           ?>
           <div class="thumbnail">
             <figure>
-              @if($images->count() == 0)
+              <!-- <div><img src="http://i1371.photobucket.com/albums/ag320/peterpanhihi/1_zps8e1ff6d4.png" alt="" width="360" height="400"></div> -->
+              @if( $images->count() == 0)
                 <div><img src="/jf-shop/images/no-image.png" alt="" width="360" height="300"></div>
               @endif
-              @foreach ($images as $image) 
+              
+              @foreach($images as $image) 
                 <div><img src="/jf-shop/{{ $image->link }}" alt="" width="360" height="300"></div>
               @endforeach
+              
               <figcaption>
                 <h3>ID : {{ $product->id }}</h3>
                 <div class="sub-title">Size : {{ $product->size }}</div>
@@ -58,7 +60,7 @@
             </div>
           </div>
         </div>
-        <?php $i++ ?>
+         <?php $i++ ?>
       @endforeach
     </div>
     <div style="float:right">

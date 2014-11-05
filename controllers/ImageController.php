@@ -4,7 +4,7 @@ class ImageController extends BaseController {
 
 	public function index()
 	{
-		$images = Images::paginate(12);
+		$images = Images::orderBy('id','DESC')->paginate(12);
         if (Request::ajax()) {
             return Response::json(View::make('images.list-images', array('images' => $images))->render());
         }
@@ -34,5 +34,18 @@ class ImageController extends BaseController {
 		} else {
 		   return Response::json('error', 400);
 		}
+	}
+
+	public function deleteImage(){
+		$image = Images::find(Input::get('id'));
+		$filename = public_path().$image->link;
+		if (File::exists($filename)) {
+    		File::delete($filename);
+    		$image->delete();
+    		return Redirect::route('image-all')
+				->with('success','The image was removed successfully!');
+		} 
+		return Redirect::route('image-all')
+				->with('fail','Error');
 	}
 }

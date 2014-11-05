@@ -35,14 +35,27 @@
 		        	<tbody>
 		        	@foreach( $orders as $order )
 		        		<tr class="order_des_{{ $order->product_id }}" >
+		        			<?php
+					            $ids = ProductImage::where('product_id', '=' ,$order->product_id )->lists('image_id');
+					            if(count($ids) == 0){
+					              $ids = array(0);
+					            }
+					            $images = Images::whereIn('id',$ids)->take(1)->get();
+					        ?>
 		        			 <td>
-			                    <a href="#">
-			                        <img alt="" src="img/cart-item.png"></img>
-			                    </a>
+		        			 	@if($images->count() == 0)
+					              <img src="/jf-shop/images/no-image.png" alt="" width="150" height="200">
+					            @endif
+					            @foreach ($images as $image) 
+					              <img src="/jf-shop/{{ $image->link }}" alt="" width="150" height="200">
+					            @endforeach
+			                    <!-- <a href="#">
+			                        <img alt="" src="i"></img>
+			                    </a> -->
 			                </td>
 			                <td class="desc" style="padding-top:45px">
 			                    <h6>
-			                        <a href="#" >
+			                        <a href="{{ URL::route('product-id',array($order->product_id)) }}" >
 										{{ $order->product_name }}
 			                        </a>      
 			                    </h6>
@@ -52,7 +65,7 @@
 			                        <button class="btn decrease" id="{{ $order->product_id }}">
 			                            <i class="glyphicon glyphicon-chevron-left"></i>
 			                        </button>
-			                        <input class="q_{{$order->product_id}}" type="text" value="{{$order->quantity}}" style="text-align:center" size="5">
+			                        <input class="q_{{$order->product_id}}" type="text" value="{{$order->quantity}}" style="text-align:center" size="5" readonly>
 			                        <button class="btn increase" id="{{ $order->product_id }}" >
 			                            <i class="glyphicon glyphicon-chevron-right"></i>
 			                        </button>
@@ -92,14 +105,14 @@
 		                                </h2>
 		                            </td>
 		                            <td class="alignLeft">
-		                                <h2 id="total-price">
+		                                <h2 class="price-total">
 		                                    {{ number_format($total_price,2) }}
 		                                </h2>
 		                            </td>
 		                        </tr>
 		                        <tr>
 		                            <td class="alignRight">
-		                                <button class="btn">
+		                                <button class="btn" onclick='location.href="{{ URL::route("home") }}"'>
 		                                    Contuine Shoping
 		                                </button>
 		                            </td>
@@ -132,13 +145,22 @@
 	     			{ 
 	     				product_id:  $(this).attr("id")  
 	     			}, function(res,status) {
-	     				updatePrice();
+	     				
 				});
 
 	     		$(('.order_des_')+ $(this).attr("id")).hide();
-			
-			    $(".badge").html( parseInt( $(".badge").html() ) - parseInt( $( ('.q_')+$(this).attr("id") ).val() ) );
-		
+
+
+				var quantity =  parseInt($('.item-total').html());
+				var total = parseFloat($('.price-total').html());
+				var total_price = parseFloat( $(('.q_')+$(this).attr("id")).val() ) * parseFloat( $(('.sub_price_')+$(this).attr("id")).html() );
+
+				quantity -= parseInt($(('.q_')+$(this).attr("id")).val());
+				total -= total_price;
+
+				$('.item-total').html( (quantity) + " item(s) ");
+        		$('.price-total').html(parseFloat(total).toFixed(2));
+
      		}
 			
  		});
@@ -151,17 +173,25 @@
 			if($(('.q_')+$(this).attr("id")).val() > 1 ) {
 
 				$.post( "/jf-shop/user/orders/decrease" , { product_id: $(this).attr("id") } ,function(res,status){
-					updatePrice();
+					
 				});
 
 				$(('.q_')+$(this).attr("id")).val( parseInt( $( ('.q_')+$(this).attr("id") ).val() ) - 1);
 
-				var total = parseInt( $(('.q_')+$(this).attr("id")).val() ) * parseFloat( $(('.sub_price_')+$(this).attr("id")).html() );
+				var total_price = parseFloat( $(('.q_')+$(this).attr("id")).val()  * parseFloat( $(('.sub_price_')+$(this).attr("id")).html() )) ;
 
-				$(('.total_price_')+$(this).attr("id")).html( parseFloat( total).toFixed(2));
-				$(".badge").html( parseInt($(".badge").html()) - 1 );
+				$(('.total_price_')+$(this).attr("id")).html( parseFloat(total_price).toFixed(2) );
 
-				updatePrice();
+				var quantity =  parseInt($('.item-total').html());
+				var total = parseFloat($('.price-total').html());
+				var sub_price = parseFloat( $(('.sub_price_')+$(this).attr("id")).html() );
+			
+				total -= sub_price;
+
+
+				$('.item-total').html( (quantity-1) + " item(s) ");
+        		$('.price-total').html(parseFloat(total).toFixed(2));
+
 			}
 		});
 		
@@ -170,31 +200,26 @@
 			e.preventDefault();
 
 			$.post( "/jf-shop/user/orders/increase" , { product_id: $(this).attr("id") } ,function(res,status){
-				updatePrice();
 
 			});
 
-			$( ('.q_')+$(this).attr("id") ).val( parseInt( $( ('.q_')+$(this).attr("id") ).val()) + 1);
-			var total = parseInt( $(('.q_')+$(this).attr("id")).val() ) * parseFloat( $(('.sub_price_')+$(this).attr("id")).html() );
+			$( ('.q_')+$(this).attr("id") ).val( parseInt( $( ('.q_')+$(this).attr("id") ).val()) + 1);		
+				
+			var total_price = parseFloat( $(('.q_')+$(this).attr("id")).val()  * parseFloat( $(('.sub_price_')+$(this).attr("id")).html() ));
 
-			$(('.total_price_')+$(this).attr("id")).html( parseFloat(total).toFixed(2) );
-			$(".badge").html( parseInt($(".badge").html()) + 1 );
+			$(('.total_price_')+$(this).attr("id")).html( parseFloat(total_price).toFixed(2) );
 
-			
+			var total = parseFloat($('.price-total').html());
+			var quantity =  parseInt($('.item-total').html());
+
+			var sub_price = parseFloat( $(('.sub_price_')+$(this).attr("id")).html() );
+
+			total += sub_price;
+
+			$('.item-total').html( (quantity+1) + " item(s) ");
+        	$('.price-total').html(parseFloat(total).toFixed(2));
 			
 		});
-
-		function updatePrice() {
-			$.get("/jf-shop/user/orders/get" , {} , function(res,status) {
-				
-				var total = 0;
-				for(var i = 0 ; i < res.length ;i++) {
-					total += res[i].price * res[i].quantity;
-				}
-
-				$('#total-price').html(parseFloat(total).toFixed(2));
-			});
-		}
 
 	});
 </script>

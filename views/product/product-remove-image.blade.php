@@ -8,15 +8,13 @@
 	<div style="margin-left:100px;">
 		<br/>
 		<h1>Select Images</h1>
-		
-		{{ Form::open(array('url' => 'products/add-image', 'method' => 'post')) }}
+		{{ Form::open(array('url' => 'products/remove-image', 'method' => 'delete')) }}
 		{{ Form::token() }}
 		{{ Form::hidden('product_id',$product->id) }}
-		{{ Form::submit(' Submit ', array('class' => 'btn-success')) }}
-		&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href="{{ URL::route('upload') }}" class="btn btn-primary">Upload image</a>
+		{{ Form::submit(' Remove ', array('class' => 'btn-danger')) }}
+		<br><br>
 		<div class="container">
-	     	@include('product.catalog-add-image-list')
+	     	@include('product.product-remove-image-list')
 		</div>
 		{{ Form::close() }}
 	</div>

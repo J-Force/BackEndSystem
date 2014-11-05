@@ -49,7 +49,7 @@
 		                   )) }}
 		          </br></br>
 
-		          <span> Identification Number </span> <input type="text" name="identified_number" value="{{ $user->identified_number }}" disabled/> 
+		          <span> Identification Number </span> <input type="text" class="form-control" name="identified_number" value="{{ $user->identified_number }}" disabled/> 
 		          @if($errors->has('identified_number'))
 						{{ $errors->first('identified_number') }}
 				  @endif
@@ -81,7 +81,7 @@
 				  @endif
 		          </br></br>
 
-		          <span> Phone Number </span> <input type="text" name="phone" value="{{ $user->phone }}"/> 
+		          <span> Phone Number </span> <input type="text" class="form-control" name="phone" value="{{ $user->phone }}"/> 
 		          @if($errors->has('phone'))
 						{{ $errors->first('phone') }}
 				  @endif

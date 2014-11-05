@@ -24,6 +24,9 @@
 	        dataType: 'json',
 	    }).done(function (data) {
 	        document.getElementById("content").innerHTML=data;
+	        console.log(document.getElementById(".shop-cart"));
+      // 			alert('a');
+    		// }
 	        console.log(data);
 	        location.hash = page;
 	    }).fail(function () {

@@ -2,8 +2,15 @@
 class AccountController extends BaseController {
 
 	public function index() {
-		$users = User::all();
-		return View::make('account.index')->with('users', $users );
+
+		if(Auth::check()) {
+			if( Entrust::hasRole('Admin') ) {
+				$users = User::all();
+				return View::make('account.index')->with('users', $users );
+			}
+		}
+
+		return Redirect::route('home')->with('fail' , 'Permission Denied');
 	}
 
 	public function getSignOut() {
@@ -70,7 +77,7 @@ class AccountController extends BaseController {
 				'sex'					=> 'required',
 				'identified_number'		=> 'required|digits:13|unique:users',
 				'address'				=> 'required',
-				'phone'					=> 'required|digits:10'
+				'phone'					=> 'required'
 			)
 		);
 
@@ -187,6 +194,8 @@ class AccountController extends BaseController {
 					$data = array(
 						'url' 		=> URL::route('account-sign-in'),
 						'email' 	=> $user->email,
+						'first_name'=> $user->first_name,
+						'last_name' => $user->last_name,
 						'password' 	=> $password 
 					);
 
