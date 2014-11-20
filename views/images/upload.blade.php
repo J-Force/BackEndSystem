@@ -7,6 +7,7 @@
 <div style="margin-left:100px">
  {{Form::open(array('url'=>'user/upload','class'=>'dropzone', 'method' => 'post'))}}
  {{Form::close()}}
- <a href="{{ URL::route('products') }}" class="btn btn-primary">Add images to product</a>
+ <br>
+ <a href="{{ URL::route('products') }}" class="btn btn-primary">Go to show all products</a>
 </div>
 @endsection

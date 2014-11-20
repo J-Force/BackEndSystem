@@ -25,11 +25,11 @@
             <figure>
               <!-- <div><img src="http://i1371.photobucket.com/albums/ag320/peterpanhihi/1_zps8e1ff6d4.png" alt="" width="360" height="400"></div> -->
               @if( $images->count() == 0)
-                <div><img src="/jf-shop/images/no-image.png" alt="" width="360" height="300"></div>
+                <div><img src="/jf-shop/images/no-image.png" alt="" width="360" height="360"></div>
               @endif
               
               @foreach($images as $image) 
-                <div><img src="/jf-shop/{{ $image->link }}" alt="" width="360" height="300"></div>
+                <div><img src="/jf-shop/{{ $image->link }}" alt="" width="360" height="360"></div>
               @endforeach
               
               <figcaption>
@@ -48,7 +48,7 @@
                 <a href="{{URL::route('account-sign-in')}}" ><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart </a>
               @endif
             </div>
-            <div class="ratings">
+            <!-- <div class="ratings">
               <p class="pull-right">15 reviews</p>
               <p>
                   <span class="glyphicon glyphicon-star"></span>
@@ -57,7 +57,7 @@
                   <span class="glyphicon glyphicon-star"></span>
                   <span class="glyphicon glyphicon-star"></span>
               </p>
-            </div>
+            </div> -->
           </div>
         </div>
          <?php $i++ ?>

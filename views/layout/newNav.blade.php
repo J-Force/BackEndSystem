@@ -40,7 +40,7 @@
                 <li style="margin-top: 5px">
                     <div >
                       <div id="cart" class="btn-group btn-block" >
-                        <button type="button" data-toggle="dropdown" class="btn btn-block btn-lg dropdown-toggle" style="background: #40E0D0">
+                        <button id="cart-dropdown" type="button" data-toggle="dropdown" class="btn btn-block btn-lg dropdown-toggle">
                           <i class="fa fa-shopping-cart"></i>
                           <span class="hidden-md">Cart:</span> 
                           <span id="cart-total"><span class="item-total">{{ Order::where('user_id' , '=' , Auth::user()->id )->count() }} item(s) </span> - THB <span class="price-total">0.00</span>
@@ -119,7 +119,7 @@ function buttonUp(){
 <script>
 $(document).ready(function(){
 
-  update();
+  updateCart();
 
   $("#cart").click(function(e) {
     
@@ -195,32 +195,32 @@ $(document).ready(function(){
         output += bottomOfCartPop();
 
         $('#cart ul').html(output);
-        update();
+        update(res);
        
       });
   }
 
 
-  function update() {
-      $.get("/jf-shop/user/orders/get" , {} , function(res,status) {
+  function update(res) {
+          var total = 0;
+          var quantity = 0;
         
-        var total = 0;
-        var quantity = 0;
-      
-        for(var i = 0 ; i < res.length ;i++) {
-          total += res[i].price * res[i].quantity;
-          quantity += parseInt(res[i].quantity); 
-        }
+          for(var i = 0 ; i < res.length ;i++) {
+            total += res[i].price * res[i].quantity;
+            quantity += parseInt(res[i].quantity); 
+          }
 
-        $('.item-total').html( quantity + " item(s) ");
-        $('.price-total').html(parseFloat(total).toFixed(2));
-
-      });
+          $('.item-total').html( quantity + " item(s) ");
+          $('.price-total').html(parseFloat(total).toFixed(2));
   }
 
 });
 </script>
 <style>
+
+  #cart-dropdown {
+    background-color: #40E0D0;
+  }
 
   .order {
     border-spacing: 0;

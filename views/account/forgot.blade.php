@@ -1,6 +1,7 @@
-@extends('layout.default')
+@extends('layout.newDefault')
 
 @section('content')
+	@include('layout.newNav')
 	<div class="modal-dialog" style="margin-top: 100px;">
 
 	      <div class="modal-content">
@@ -19,7 +20,7 @@
 						Email : 
 						<input type="email" class="form-control" placeholder="example@example.com" name="email" {{ (Input::old('email')) ? ' value="' . e(Input::old('email')) . '"' : '' }} autofocus >
 						@if($errors->has('email'))
-							{{ $errors->first('email') }}
+							<p class="imt">{{ $errors->first('email') }}</p>
 						@endif
 					</div>
 					</br>
@@ -27,7 +28,7 @@
 						Identification Number: 
 						<input type="text" class="form-control"  name="identified_number" >
 						@if($errors->has('identified_number'))
-							{{ $errors->first('identified_number') }}
+							<p class="imt">{{ $errors->first('identified_number') }}</p>
 						@endif
 					</div>
 
@@ -39,5 +40,9 @@
 
 			</div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
-
+    <style type="text/css">
+    	.imt {
+    		color: red;
+    	}
+    </style>
 @endsection

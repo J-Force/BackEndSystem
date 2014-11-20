@@ -36,16 +36,14 @@ App::after(function($request, $response)
 Route::filter('auth', function()
 {
 	if (Auth::guest())
-	{
-		if (Request::ajax())
-		{
-			return Response::make('Unauthorized', 401);
-		}
-		else
-		{
-			return Redirect::guest(URL::route('account-sign-in'));
-		}
+	{	
+		if(Request::ajax()) {
+			return Response::json(array('fail' => 'you must to sign in'));
+		} else {
+			return Redirect::guest('/user/sign_in');
+		}		
 	}
+
 });
 
 

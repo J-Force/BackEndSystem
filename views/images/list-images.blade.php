@@ -49,11 +49,12 @@
 	                    <h3>{{ $image -> id }}</h3>
 	                    <p>{{ $image -> link }}</p>
 	                    <p><a href="/jf-shop{{ $image -> link }}" class="btn btn-primary">Full Size</a> 
-	                    {{ Form::open(array('url' => 'image/delete','method' => 'delete')) }}
+	                    <a href="image/delete/{{$image->id}}" class="btn btn-danger" data-method="delete" data-confirm="Are you sure?">Remove</a>
+	                    <!-- {{ Form::open(array('url' => 'image/delete','method' => 'delete')) }}
 			            {{ Form::token() }}
 			            {{ Form::hidden('id',$image->id) }}
 			            {{ Form::submit('Remove',array('class'=>'btn btn-danger')) }}
-			            {{ Form::close() }}
+			            {{ Form::close() }} -->
 			        	</p>
 		            </div>
 		        </div>
@@ -62,5 +63,6 @@
 	    </div>
 	    <div style="float:right">{{ $images->links() }}</div>
 	</div>
+	@include('scripts.confirmRemove')
 	
 		    

@@ -2,6 +2,14 @@
 @section('content')
 @include('layout.newNav')
 @include('layout.menu_admin')
+<script type="text/javascript">
+  $(document).on('submit', '.delete-form', function(){
+      return confirm('Are you sure?');
+  });
+</script>
+<br>
+<a href="{{ URL::route('product-add-view') }}" class="btn btn-success" style="margin-left:100px">Add New Product</a>
+<br><br>
 	<table class="table table-striped" style="margin-left:7%;width:90%" align="center">  
 	  	<tr>
         <th><center> Product ID </center></th>
@@ -22,16 +30,17 @@
   			<td><center>{{ $product->price  }}</center></td>
   			<td><center>{{ $product->sex }}</center></td>
   			<td><center>{{ $product->quantity }}</center></td>
-        <td><center><a href="{{ URL::route('product-edit-view',array($product -> id)) }}">Edit</a></center></td>
+        <td><center><a href="{{ URL::route('product-edit-view',array($product -> id)) }}" class="btn btn-primary">Edit</a></center></td>
         
-         <td><center><a href="{{ URL::route('product-add-image',array($product -> id)) }}">Add Image</a></center></td>
-         <td><center><a href="{{ URL::route('product-remove-image',array($product -> id)) }}">Remove Image</a></center></td>
+         <td><center><a href="{{ URL::route('product-add-image',array($product -> id)) }}" class="btn btn-primary">Add Image</a></center></td>
+         <td><center><a href="{{ URL::route('product-remove-image',array($product -> id)) }}" class="btn btn-danger">Remove Image</a></center></td>
          <td><center>
-          {{ Form::open(array('url' => 'products/delete','method' => 'delete')) }}
+          <a href="products/delete/{{$product->id}}" class="btn btn-danger" data-method="delete" data-confirm="Are you sure?">Remove</a>
+          <!-- {{ Form::open(array('url' => 'products/delete','method' => 'delete')) }}
           {{ Form::token() }}
           {{ Form::hidden('id',$product->id) }}
           {{ Form::submit('Delete') }}
-          {{ Form::close() }}
+          {{ Form::close() }} -->
         </center></td>
   		</tr>
   	@endforeach
@@ -42,5 +51,6 @@
 			max-width: 600px;
 		}
 	</style>
+@include('scripts.confirmRemove')
 @endsection
 

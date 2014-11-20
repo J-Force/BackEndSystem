@@ -65,7 +65,7 @@
 			                        <button class="btn decrease" id="{{ $order->product_id }}">
 			                            <i class="glyphicon glyphicon-chevron-left"></i>
 			                        </button>
-			                        <input class="q_{{$order->product_id}}" type="text" value="{{$order->quantity}}" style="text-align:center" size="5" readonly>
+			                        <input class="q_{{$order->product_id}}" id="{{ $order->product_id }}" type="text" value="{{$order->quantity}}" style="text-align:center" size="5" min="1" max="99999">
 			                        <button class="btn increase" id="{{ $order->product_id }}" >
 			                            <i class="glyphicon glyphicon-chevron-right"></i>
 			                        </button>
@@ -112,7 +112,7 @@
 		                        </tr>
 		                        <tr>
 		                            <td class="alignRight">
-		                                <button class="btn" onclick='location.href="{{ URL::route("home") }}"'>
+		                                <button class="btn" onclick='location.href="{{ URL::route("catalog-man") }}"'>
 		                                    Contuine Shoping
 		                                </button>
 		                            </td>
@@ -134,28 +134,60 @@
 
 	$(document).ready(function(){
 
+		$('input').change(function(){
+
+			var product_id = $(this).attr('id');
+			var quantity = parseInt($(this).val());
+
+			if(quantity <= 0) {
+				$(this).val(1);
+				quantity = 1;
+			}
+
+			$.post( "/jf-shop/user/orders/add_cart" , 
+			       { product_id:product_id , 
+			       	quantity:quantity , 
+			       	type:'input'} ,
+			       function(res,status){
+			       	 update();
+			       }
+			);
+			
+			
+			var total_price = parseFloat( $(('.q_')+product_id).val()  
+				* parseFloat( $(('.sub_price_')+product_id).html() )) ;
+
+			$(('.total_price_')+product_id).html( parseFloat(total_price).toFixed(2) );
+
+			
+			
+
+		});
+
 		$('.remove').click(function(e){
 
 		    e.preventDefault();
 
 		    var r = confirm('Do you want to remove this order line?');
 
+		    var product_id = $(this).attr("id");
+
 		    if( r ) {
 	     		$.post( "/jf-shop/user/orders/remove_cart", 
 	     			{ 
-	     				product_id:  $(this).attr("id")  
-	     			}, function(res,status) {
-	     				
-				});
+	     				product_id:  product_id 
+	     			}, function(res,status) {}
+	     		);
 
-	     		$(('.order_des_')+ $(this).attr("id")).hide();
+	     		$(('.order_des_')+ product_id).hide();
 
 
 				var quantity =  parseInt($('.item-total').html());
 				var total = parseFloat($('.price-total').html());
-				var total_price = parseFloat( $(('.q_')+$(this).attr("id")).val() ) * parseFloat( $(('.sub_price_')+$(this).attr("id")).html() );
+				var total_price = parseFloat( $(('.q_')+product_id).val() ) 
+				* parseFloat( $(('.sub_price_')+product_id).html() );
 
-				quantity -= parseInt($(('.q_')+$(this).attr("id")).val());
+				quantity -= parseInt($(('.q_')+product_id).val());
 				total -= total_price;
 
 				$('.item-total').html( (quantity) + " item(s) ");
@@ -172,19 +204,23 @@
 
 			if($(('.q_')+$(this).attr("id")).val() > 1 ) {
 
-				$.post( "/jf-shop/user/orders/decrease" , { product_id: $(this).attr("id") } ,function(res,status){
-					
-				});
+				var product_id = $(this).attr("id");
 
-				$(('.q_')+$(this).attr("id")).val( parseInt( $( ('.q_')+$(this).attr("id") ).val() ) - 1);
+				$.post( "/jf-shop/user/orders/decrease" , 
+					{ product_id: $(this).attr("id") ,quantity:1 } ,
+					function(res,status){}
+				);
 
-				var total_price = parseFloat( $(('.q_')+$(this).attr("id")).val()  * parseFloat( $(('.sub_price_')+$(this).attr("id")).html() )) ;
+				$(('.q_')+product_id).val( parseInt( $( ('.q_')+product_id ).val() ) - 1);
 
-				$(('.total_price_')+$(this).attr("id")).html( parseFloat(total_price).toFixed(2) );
+				var total_price = parseFloat( $(('.q_')+product_id).val()  
+					* parseFloat( $(('.sub_price_')+product_id).html() )) ;
+
+				$(('.total_price_')+product_id).html( parseFloat(total_price).toFixed(2) );
 
 				var quantity =  parseInt($('.item-total').html());
 				var total = parseFloat($('.price-total').html());
-				var sub_price = parseFloat( $(('.sub_price_')+$(this).attr("id")).html() );
+				var sub_price = parseFloat( $(('.sub_price_')+product_id).html() );
 			
 				total -= sub_price;
 
@@ -199,20 +235,26 @@
 		$('.increase').click(function(e) {
 			e.preventDefault();
 
-			$.post( "/jf-shop/user/orders/increase" , { product_id: $(this).attr("id") } ,function(res,status){
+			var product_id = $(this).attr("id");
+ 
+			  $.post( "/jf-shop/user/orders/increase" , 
+			  { product_id: product_id , quantity: 1 } ,
+			  function(res,status){
+			  	console.log(res);
+			  }
+			);
 
-			});
-
-			$( ('.q_')+$(this).attr("id") ).val( parseInt( $( ('.q_')+$(this).attr("id") ).val()) + 1);		
+			$( ('.q_')+product_id ).val( parseInt( $( ('.q_')+product_id ).val()) + 1);		
 				
-			var total_price = parseFloat( $(('.q_')+$(this).attr("id")).val()  * parseFloat( $(('.sub_price_')+$(this).attr("id")).html() ));
+			var total_price = parseFloat( $(('.q_')+product_id).val()  
+				* parseFloat( $(('.sub_price_')+product_id).html() ));
 
-			$(('.total_price_')+$(this).attr("id")).html( parseFloat(total_price).toFixed(2) );
+			$(('.total_price_')+product_id).html( parseFloat(total_price).toFixed(2) );
 
 			var total = parseFloat($('.price-total').html());
 			var quantity =  parseInt($('.item-total').html());
 
-			var sub_price = parseFloat( $(('.sub_price_')+$(this).attr("id")).html() );
+			var sub_price = parseFloat( $(('.sub_price_')+product_id).html() );
 
 			total += sub_price;
 
@@ -220,6 +262,18 @@
         	$('.price-total').html(parseFloat(total).toFixed(2));
 			
 		});
+
+		function update() {
+			$.get( "/jf-shop/user/orders/callback" ,
+				   {} , 
+				   function(res,data) {
+				   	 $('.price-total').html(parseFloat(res[0]).toFixed(2));
+				   	 $('.item-total').html( (res[1]) + " item(s) "); 
+				   }
+			);
+
+		
+		}
 
 	});
 </script>

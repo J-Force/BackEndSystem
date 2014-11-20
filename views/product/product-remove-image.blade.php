@@ -11,7 +11,7 @@
 		{{ Form::open(array('url' => 'products/remove-image', 'method' => 'delete')) }}
 		{{ Form::token() }}
 		{{ Form::hidden('product_id',$product->id) }}
-		{{ Form::submit(' Remove ', array('class' => 'btn-danger')) }}
+		{{ Form::submit(' REMOVE ', array('class' => 'btn-danger')) }}
 		<br><br>
 		<div class="container">
 	     	@include('product.product-remove-image-list')

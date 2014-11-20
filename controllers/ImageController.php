@@ -2,6 +2,10 @@
 
 class ImageController extends BaseController {
 
+	public function __construct() {
+		$this->beforeFilter('auth');
+	}
+
 	public function index()
 	{
 		$images = Images::orderBy('id','DESC')->paginate(12);
@@ -36,8 +40,8 @@ class ImageController extends BaseController {
 		}
 	}
 
-	public function deleteImage(){
-		$image = Images::find(Input::get('id'));
+	public function deleteImage($id){
+		$image = Images::find($id);
 		$filename = public_path().$image->link;
 		if (File::exists($filename)) {
     		File::delete($filename);

@@ -111,28 +111,39 @@
                                 <ul class="price-avl">                         
                                     <label style="color:green;font-size:40px">Price : <span class="price_{{$product->id}}">{{ $product->price }}</span> baht</label>
                               		</br>
-                              		<label style="font-size:20px">Stock : {{ $product->quantity }} ea.</label>
+                                    @if( $product->quantity > 0 )
+                              		<label style="font-size:20px;color:green">In Stock</label>
+                                    @else
+                                    <label style="font-size:20px;color:red">Out of Stock</label>
+                                    @endif
                                
                                     <div class="clear"> </div>
                                 </ul>
                             	<br>
-                                <ul class="prosuct-qty">
+                                <ul class="product-qty">
                                     <label>Quantity:</label>
-                                    <select>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                        <option>6</option>
-                                    </select>&nbsp&nbsp&nbsp&nbsp&nbsp
-                                    @if(Auth::check())                        
-                                	   <input id="{{ $product->id }}" class="shop-cart" name="{{ $product->name }}" type="button" value="add to cart" />
-                                    @else
-                                        <input id="{{ $product->id }}" name="{{ $product->name }}" type="button" value="add to cart" />
-                                    @endif                             
+                                    <select id="p-qty">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                    </select>&nbsp&nbsp&nbsp&nbsp&nbsp                  
+                                	<input id="{{ $product->id }}" class="shop-cart" name="{{ $product->name }}" type="button" value="add to cart" />                                                       
                                 </ul>
-                                
+                                @if(Entrust::hasRole('Admin'))
+                                    <a href="{{ URL::route('product-edit-view',array($product -> id)) }}" class="btn btn-primary">Edit Product</a>
+                                    <a href="{{ URL::route('product-add-image',array($product -> id)) }}" class="btn btn-primary">Add Image</a>
+                                    <a href="{{ URL::route('product-remove-image',array($product -> id)) }}" class="btn btn-danger">Remove Image</a>
+                                    <!-- <a href="products/delete/{{$product->id}}" class="btn btn-danger" data-method="delete" data-confirm="Are you sure?">Remove</a> -->
+                                    <!-- {{ Form::open(array('url' => 'products/delete','method' => 'delete')) }}
+                                    {{ Form::token() }}
+                                    {{ Form::hidden('id',$product->id) }}
+                                    {{ Form::submit('DELETE PRODUCT',array('class'=>'btn-danger')) }}
+                                    {{ Form::close() }} -->
+                                    <br><br>
+                                @endif
                                 
                             </div>
                         </div>
@@ -236,5 +247,5 @@
         </div>
     </div>
 </div>
-
+@include('scripts.confirmRemove')
 @endsection

@@ -1,6 +1,11 @@
 <?php
 class ProfileController extends BaseController {
 
+	public function __construct() {
+		$this->beforeFilter('auth');
+	}
+
+	
 	public function user() {
 
 		$user = User::find(Auth::user()->id);

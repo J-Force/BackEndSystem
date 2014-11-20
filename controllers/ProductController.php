@@ -110,7 +110,7 @@ class ProductController extends BaseController {
 						'sex'=>Input::get('sex'),
 						'quantity'=>Input::get('quantity')
 					));
-					return Redirect::route('product',$id)
+					return Redirect::route('product-id',$id)
 						->with('success','The product was updated successfully!');
 				}
 			}
@@ -119,10 +119,10 @@ class ProductController extends BaseController {
 		return Redirect::route('home')->with('fail' , 'Permission Denied');
 	}
 
-	public function deleteProduct(){
+	public function deleteProduct($id){
 		if(Auth::check()) {
 			if( Entrust::hasRole('Admin') ) {
-				Product::find(Input::get('id'))->delete();
+				Product::find($id)->delete();
 				return Redirect::route('products')
 						->with('success','The product was removed successfully!');
 			}
@@ -159,15 +159,16 @@ class ProductController extends BaseController {
 		if(Auth::check()) {
 			if( Entrust::hasRole('Admin') ) {
 				$images = Input::get('image');
+				$id = Input::get('product_id');
 				if(is_array($images))
 				{
 					foreach ($images as $image) {
 						ProductImage::create(array(
-							'product_id'=>Input::get('product_id'),
+							'product_id'=>$id,
 							'image_id'=>$image
 						));
 					}
-					return Redirect::route('products')
+					return Redirect::route('product-id',$id)
 							->with('success','Add Images to product was created successfully!');
 				}
 			}

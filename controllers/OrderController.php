@@ -1,120 +1,156 @@
 <?php
 class OrderController extends BaseController {
 
+	public function __construct() {
+		$this->beforeFilter('auth');
+	}
+
+
 	public function getUserOrder() {
-		$user = Auth::user();
-
-		if($user){
-			$orders = DB::table('orders')
-			                 ->select('id','product_id', DB::raw('count(*) as quantity'))
-			                 ->where('user_id' ,'=' , $user->id)
-			                 ->where('status' ,'=' ,0)
-			                 ->groupBy('product_id')
-			                 ->get();
-
-			foreach ($orders as $order)
-			{
-			    $product = Product::find($order->product_id);
-			    $order->product_name = $product->name;
-			    $order->price = $product->price;
-			}
-			
-			return View::make('order.show')->with('orders', $orders);
-		}
-		return App::abort(404);
-	}
-
-	public function getOrderToCartPop() {
-		$user = Auth::user();
-
-		if($user){
-			$orders = DB::table('orders')
-                 ->select('product_id', DB::raw('count(*) as quantity'))
-                 ->where('user_id' ,'=' , $user->id)
-                 ->where('status' ,'=' ,0)
-                 ->groupBy('product_id')
-                 ->get();
-
-			foreach ($orders as $order)
-			{
-			    $product = Product::find($order->product_id);
-			    $order->product_name = $product->name;
-			    $order->price = $product->price;
-			}
-
-			return $orders;
-		}
-
-	}
-
-	public function addCart(){
-
-		if(Auth::check()) {
+		
 			$user = Auth::user();
 
 			if($user){
+			
+
+				$orders = Order::where('user_id' ,'=' ,$user->id)->get();
+
+				foreach ($orders as $order)
+				{
+				    $product = Product::find($order->product_id);
+				    $order->product_name = $product->name;
+				    $order->price = $product->price;
+				}
 				
-				Order::create(array(
-				   	'user_id' => $user->id, 
-				   	'product_id' => Input::get('product_id'),
-				   	'status' => 0,
-				));
+				return View::make('order.show')->with('orders', $orders);
+			}
+		
+	}
+
+	public function getOrderToCartPop() {
+			
+			$user = Auth::user();
+
+			if($user){
+			
+
+				$orders = Order::where('user_id' ,'=' ,$user->id)->get();
+
+				foreach ($orders as $order)
+				{
+				    $product = Product::find($order->product_id);
+				    $order->product_name = $product->name;
+				    $order->price = $product->price;
+				}
+
+				return $orders;
+			}
+		
+	}
+
+	public function addCart() {		
+			$user = Auth::user();
+
+			if($user){
+
+				$quantity = Input::get('quantity');
+				$product_id = Input::get('product_id');
+
+				$order = Order::firstOrCreate( 
+					array(
+						'product_id' => $product_id , 
+						'user_id' 	 => $user->id ,
+					) 
+				);
+
+				if(Input::get('type')) {
+					$order->quantity = $quantity;
+				} else {
+					$order->quantity += $quantity;
+				}
+				$order->save();
+
 			}
 
-			return Redirect::route('user-order');
 
-		} else {
-
-			return Redirect::route('account-create');
-		}
 	}
 
 	public function increaseOrder() {
 
-		if(Auth::check()) {
+		
 			$user = Auth::user();
 
 			if($user) {
-				Order::create(array(
-				   	'user_id' => $user->id, 
-				   	'product_id' => Input::get('product_id'),
-				   	'status' => 0,
-				));
+				$quantity = Input::get('quantity');
+				$product_id = Input::get('product_id');
+
+				$order = Order::where('user_id' , '=' , $user->id )
+				                ->where('product_id','=',$product_id)->get();
+
+
+				foreach( $order as $o ) {
+					$o->quantity += $quantity;
+					$o->save();
+				}
 			}
-		}
+		
 
 	}
 
 	public function decreaseOrder() {
 
-		if(Auth::check()) {
+		
 			$user = Auth::user();
 
 			if($user) {
 
-				$order = DB::table('orders')
-				         ->where('product_id' ,'=' , Input::get('product_id'))
-				         ->first();
+				$quantity = Input::get('quantity');
+				$product_id = Input::get('product_id');
 
-				if($order) {
-					Order::destroy($order->id);
+				$order = Order::where('user_id' , '=' , $user->id )
+				                ->where('product_id','=',$product_id)->get();
+
+				foreach( $order as $o ) {
+					$o->quantity += $quantity;
+					$o->save();
 				}
 
 			}
-		}
+		
 	}
 
 	public function removeCart(){
 
+		
+			$user = Auth::user();
+
+			if($user){
+
+				$product_id = Input::get('product_id');
+				DB::table('orders')->where('product_id' , '=' , $product_id )->delete();
+
+			}
+		
+	}
+
+	public function callbackTotalPrice() {
+
 		$user = Auth::user();
 
-		if($user){
+		$orders = Order::where('user_id','=',$user->id)->get();
+		$total_price = 0;
+		$total_quantity = 0;
 
-			$product_id = Input::get('product_id');
-			DB::table('orders')->where('product_id' , '=' , $product_id )->delete();
+		$total = [];
 
+		foreach ($orders as $order) {
+			$product = Product::find($order->product_id);
+			$total_price += $order->quantity * $product->price;
+			$total_quantity += $order->quantity;
 		}
-		
-		return Redirect::route('user-order');
+
+		array_push($total,$total_price,$total_quantity);
+		return $total;
+
 	}
 }

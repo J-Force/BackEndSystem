@@ -50,7 +50,7 @@ Route::group(array('before' => 'auth'),function(){
 		/*
 			Change password (POST)
 		*/
-		Route::post('user/change_password' ,array(
+		Route::post('/user/change_password' ,array(
 			'as' => 'account-change-password-post',
 			'uses' => 'AccountController@postChangePassword'
 		)); 
@@ -94,6 +94,39 @@ Route::group(array('before' => 'auth'),function(){
 			'uses' => 'OrderController@decreaseOrder'
 		));
 
+		/*
+			Calculate total price order for Ajax
+		*/
+		Route::get('/user/orders/callback' ,array(
+			'as' => 'user-order-callback',
+			'uses' => 'OrderController@callbackTotalPrice'
+		));
+
+		/*
+			Profile
+		*/
+		Route::get('/user/profile' , array(
+			'as' => 'profile-user',
+			'uses' => 'ProfileController@user'
+		));
+
+		/*
+			User Cart GET ( View )
+		*/
+		Route::get('/user/orders' ,array(
+			'as' => 'user-order',
+			'uses' => 'OrderController@getUserOrder'
+		));
+
+		/*
+			User Cart-pop GET
+		*/
+		Route::get('/user/orders/get' ,array(
+			'as' => 'user-order-get',
+			'uses' => 'OrderController@getOrderToCartPop'
+		));
+
+
 	});
 
 	/*
@@ -114,7 +147,7 @@ Route::group(array('before' => 'auth'),function(){
 
 	Route::put('products/update', array('before' => 'csrf','uses' => 'ProductController@editProduct'));
 
-	Route::delete('products/delete', array('before' => 'csrf','uses' => 'ProductController@deleteProduct'));
+	Route::delete('products/delete/{id}', array('uses' => 'ProductController@deleteProduct'));
 
 	Route::get('/products/{id}/add-image', array('as' => 'product-add-image' , 'uses' => 'ProductController@showAddImage'));
 
@@ -142,12 +175,12 @@ Route::group(array('before' => 'auth'),function(){
 
 	Route::post('user/upload' ,'ImageController@uploadImage');
 
-	Route::delete('image/delete', array('before' => 'csrf','uses' => 'ImageController@deleteImage'));
+	Route::delete('image/delete/{id}', array('uses' => 'ImageController@deleteImage'));
 
 	/*
 		Change password (GET)
 	*/
-	Route::get('user/change_password', array(
+	Route::get('/user/change_password', array(
 		'as' => 'account-change-password',
 		'uses' => 'AccountController@getChangePassword'
 	));
@@ -155,34 +188,11 @@ Route::group(array('before' => 'auth'),function(){
 	/*
 		Sign Out (GET)
 	*/
-	Route::get('user/sign_out',array(
+	Route::get('/user/sign_out',array(
 		'as' => 'account-sign-out',
 		'uses' => 'AccountController@getSignOut'
 	));
 
-	/*
-		Profile
-	*/
-	Route::get('/user/profile' , array(
-		'as' => 'profile-user',
-		'uses' => 'ProfileController@user'
-	));
-
-	/*
-		User Cart GET ( View )
-	*/
-	Route::get('/user/orders' ,array(
-		'as' => 'user-order',
-		'uses' => 'OrderController@getUserOrder'
-	));
-
-	/*
-		User Cart-pop GET
-	*/
-	Route::get('/user/orders/get' ,array(
-		'as' => 'user-order-get',
-		'uses' => 'OrderController@getOrderToCartPop'
-	));
 
 });
 

@@ -23,13 +23,13 @@
 	          <input type="email" class="form-control" placeholder="example@example.com" name="email" {{ (Input::old('email')) ? ' value="' . e(Input::old('email')) . '"' : '' }} autofocus/>
 	          <br />
 	          @if($errors->has('email'))
-					{{ $errors->first('email') }}
+					<p class="imt">{{ $errors->first('email') }}</p>
 			  @endif
 
 	          *<span style="font-weight:bold;" > Password</span><br />
 	          <input type="password" class="form-control" name="password" /><br />
 	          @if($errors->has('password'))
-					{{ $errors->first('password') }}
+					<p class="imt">{{ $errors->first('password') }}</p>
 			  @endif
 
 	          <input type="checkbox" name="remember" id="remember" >
@@ -56,5 +56,9 @@
 
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
-  
+  	<style type="text/css">
+    	.imt {
+    		color: red;
+    	}
+    </style>
 @endsection

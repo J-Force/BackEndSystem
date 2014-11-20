@@ -20,7 +20,7 @@
 						Current password: 
 						<input type="password" class="form-control" name="current_password">
 						@if($errors->has('current_password'))
-							{{ $errors->first('current_password') }}
+							<p class="imt">{{ $errors->first('current_password') }}</p>
 						@endif
 					</div>
 
@@ -28,7 +28,7 @@
 						New password: 
 						<input type="password" class="form-control" name="password">
 						@if($errors->has('password'))
-							{{ $errors->first('password') }}
+							<p class="imt">{{ $errors->first('password') }}</p>
 						@endif
 					</div>
 
@@ -36,7 +36,7 @@
 						New password confirmation: 
 						<input type="password" class="form-control" name="password_confirmation">
 						@if($errors->has('password_confirmation'))
-							{{ $errors->first('password_confirmation') }}
+							<p class="imt">{{ $errors->first('password_confirmation') }}</p>
 						@endif
 					</div>
 
@@ -47,4 +47,9 @@
 			</form>
     	</div><!-- /.modal-dialog -->
 	</div>
+	<style type="text/css">
+    	.imt {
+    		color: red;
+    	}
+    </style>
 @endsection

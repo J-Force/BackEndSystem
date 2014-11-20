@@ -25,10 +25,10 @@
           <div class="thumbnail">
             <figure>
               @if($images->count() == 0)
-                <div><img src="/jf-shop/images/no-image.png" alt="" width="360" height="300"></div>
+                <div><img src="/jf-shop/images/no-image.png" alt="" width="360" height="360"></div>
               @endif
               @foreach ($images as $image) 
-                <div><img src="/jf-shop/{{ $image->link }}" alt="" width="360" height="300"></div>
+                <div><img src="/jf-shop/{{ $image->link }}" alt="" width="360" height="360"></div>
               @endforeach
               <figcaption>
                 <h3>ID : {{ $product->id }}</h3>
@@ -40,13 +40,11 @@
             <div class="caption text-center">
               <h5>{{ $product -> name }}</h5>
               <h6>THB <span class="price_{{ $product->id }}">{{ $product -> price }}</span></h6>
-              @if(Auth::check())
+              
                 <a href="#" id="{{ $product->id }}" class="shop-cart" name="{{ $product->name }}" ><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart </a>
-              @else
-                <a href="{{URL::route('account-sign-in')}}" ><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart </a>
-              @endif
+              
             </div>
-            <div class="ratings">
+            <!-- <div class="ratings">
               <p class="pull-right">15 reviews</p>
               <p>
                   <span class="glyphicon glyphicon-star"></span>
@@ -55,7 +53,7 @@
                   <span class="glyphicon glyphicon-star"></span>
                   <span class="glyphicon glyphicon-star"></span>
               </p>
-            </div>
+            </div> -->
           </div>
         </div>
         <?php $i++ ?>

@@ -12,7 +12,7 @@
 		{{ Form::open(array('url' => 'products/add-image', 'method' => 'post')) }}
 		{{ Form::token() }}
 		{{ Form::hidden('product_id',$product->id) }}
-		{{ Form::submit(' Submit ', array('class' => 'btn-success')) }}
+		{{ Form::submit(' ADD IMAGES TO PRODUCT ', array('class' => 'btn-success')) }}
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		<a href="{{ URL::route('upload') }}" class="btn btn-primary">Upload image</a>
 		<div class="container">
