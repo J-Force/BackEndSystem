@@ -101,7 +101,7 @@
                             <label>Product ID : {{ $product->id }}</label>
                             <ul class="pro-rate">
                                 <li><a class="product-rate" href="#"> <label> </label></a> <span> </span></li>
-                                <li><a href="#"><h5>3 Review(s) Add Review</h5></a></li>
+                                <li><a href="#"><h5><span class="count_{{ $product->id }}">{{ $reviews->count() }}</span> Review(s)</h5></a></li>
                             </ul>
          					<label style="font-size:20px">Size : {{ $product->size }}</label>
          					<br>
@@ -112,9 +112,9 @@
                                     <label style="color:green;font-size:40px">Price : <span class="price_{{$product->id}}">{{ $product->price }}</span> baht</label>
                               		</br>
                                     @if( $product->quantity > 0 )
-                              		<label style="font-size:20px;color:green">In Stock</label>
+                              		    <label style="font-size:20px;color:green">In Stock</label>
                                     @else
-                                    <label style="font-size:20px;color:red">Out of Stock</label>
+                                        <label style="font-size:20px;color:red">Out of Stock</label>
                                     @endif
                                
                                     <div class="clear"> </div>
@@ -129,7 +129,7 @@
                                         <option value="4">4</option>
                                         <option value="5">5</option>
                                         <option value="6">6</option>
-                                    </select>&nbsp&nbsp&nbsp&nbsp&nbsp                  
+                                    </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                  
                                 	<input id="{{ $product->id }}" class="shop-cart" name="{{ $product->name }}" type="button" value="add to cart" />                                                       
                                 </ul>
                                 @if(Entrust::hasRole('Admin'))
@@ -203,49 +203,53 @@
         </div>
     </div>
     <div class="well">
-        <div class="text-right">
-            <a class="btn btn-success">Leave a Review</a>
+        <div class="text-left comment"> 
+            <textarea col="100" row="30" name="comment"></textarea>
         </div>
-        <hr>
-        <div class="row">
+        <a class="btn btn-success send-comment pull-right" id="{{ $product->id }}">Leave a Review</a>
+        </br></br>
+        <hr class="seperate">
+        @foreach($reviews as $review)    
+        <div class="row row_{{$review->id}}" >
             <div class="col-md-12">
                 <span class="glyphicon glyphicon-star"></span>
                 <span class="glyphicon glyphicon-star"></span>
                 <span class="glyphicon glyphicon-star"></span>
                 <span class="glyphicon glyphicon-star"></span>
                 <span class="glyphicon glyphicon-star-empty"></span>
-                Anonymous
-                <span class="pull-right">10 days ago</span>
-                <p>This product was great in terms of quality. I would definitely buy another!</p>
+                <?php
+                    $user = User::find($review->user_id);
+                    $date_comment = date_create($review->updated_at);
+
+                    $date_current = new DateTime();
+                    $date_current = date_create($date_current->format('Y-m-d H:i:s'));
+
+                    $comment = Comment::find($review->comment_id);
+
+                    $interval = date_diff($date_current,$date_comment);
+                ?>
+                {{ $user->first_name.' '.$user->last_name }}
+                <span class="pull-right">{{ $interval->format('%a days %h hours %i minutes %s seconds').' agos'; }}</span>
+                <p class="{{$review->id}}">{{ $comment->text }}</p>
+                @if(Auth::user()->id == $review->user_id)
+                    <a class="btn btn-danger pull-right delete-comment" review-id="{{$review->id}}" product-id="{{$review->product_id}}">Delete</a>
+                    <a class="btn btn-primary pull-right edit-comment" review-id="{{$review->id}}" product-id="{{$review->product_id}}">Edit</a><p>  
+                @endif   
             </div>
         </div>
-        <hr>
-        <div class="row">
-            <div class="col-md-12">
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
-                Anonymous
-                <span class="pull-right">12 days ago</span>
-                <p>I've alredy ordered another one!</p>
-            </div>
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col-md-12">
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
-                Anonymous
-                <span class="pull-right">15 days ago</span>
-                <p>I've seen some better than this, but not at this price. I definitely recommend this item.</p>
-            </div>
-        </div>
+        <hr class="end-seperate_{{$review->id}}">
+        @endforeach
     </div>
 </div>
 @include('scripts.confirmRemove')
+@include('scripts.comment')
+<style>
+    textarea {
+        width:100%;
+        max-width: 1200px;
+        height: 100%;
+        max-height: 200px;
+        padding: 10px 10px 10px 10px;
+    }
+</style>
 @endsection

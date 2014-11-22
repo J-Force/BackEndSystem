@@ -178,7 +178,12 @@ class ProductController extends BaseController {
 	}
 
 	public function showDetail($id){
-		return View::make('product.product-detail')->with('product',Product::find($id));
+
+		$reviews = Review::where('product_id','=',$id)->orderBy('id','DESC')->get();
+
+		$product = Product::find($id);
+
+		return View::make('product.product-detail')->with('product',$product)->with('reviews',$reviews);
 	}
 
 	public function showRemoveImage($id){

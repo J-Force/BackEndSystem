@@ -1,8 +1,5 @@
 
 <script>
-
-    
-
     $("body").delegate(".shop-cart", "click", function(e) {
         
       var quantity = $('#p-qty').val();

@@ -126,6 +126,21 @@ Route::group(array('before' => 'auth'),function(){
 			'uses' => 'OrderController@getOrderToCartPop'
 		));
 
+		Route::post('/products/show/{id}/comment',array(
+			'as' => 'comment',
+			'uses' => 'ReviewController@commitComment'
+		));
+
+		Route::post('/products/show/{id}/comment/{review_id}/delete',array(
+			'as' => 'delete-comment',
+			'uses' => 'ReviewController@deleteComment'
+		));
+
+		Route::post('/products/show/{id}/comment/{review_id}/edit',array(
+			'as' => 'edit-comment',
+			'uses' => 'ReviewController@editComment'
+		));
+
 
 	});
 

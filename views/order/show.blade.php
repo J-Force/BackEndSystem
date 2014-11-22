@@ -154,10 +154,10 @@
 			);
 			
 			
-			var total_price = parseFloat( $(('.q_')+product_id).val()  
-				* parseFloat( $(('.sub_price_')+product_id).html() )) ;
+			var total_price = parseFloat( $('.q_'+product_id).val()  
+				* parseFloat( $('.sub_price_'+product_id).html() )) ;
 
-			$(('.total_price_')+product_id).html( parseFloat(total_price).toFixed(2) );
+			$('.total_price_'+product_id).html( parseFloat(total_price).toFixed(2) );
 
 			
 			
@@ -179,15 +179,15 @@
 	     			}, function(res,status) {}
 	     		);
 
-	     		$(('.order_des_')+ product_id).hide();
+	     		$('.order_des_'+ product_id).remove();
 
 
 				var quantity =  parseInt($('.item-total').html());
 				var total = parseFloat($('.price-total').html());
-				var total_price = parseFloat( $(('.q_')+product_id).val() ) 
-				* parseFloat( $(('.sub_price_')+product_id).html() );
+				var total_price = parseFloat( $('.q_'+product_id).val() ) 
+				* parseFloat( $('.sub_price_'+product_id).html() );
 
-				quantity -= parseInt($(('.q_')+product_id).val());
+				quantity -= parseInt($('.q_'+product_id).val());
 				total -= total_price;
 
 				$('.item-total').html( (quantity) + " item(s) ");
@@ -211,16 +211,16 @@
 					function(res,status){}
 				);
 
-				$(('.q_')+product_id).val( parseInt( $( ('.q_')+product_id ).val() ) - 1);
+				$('.q_'+product_id).val( parseInt( $( '.q_'+product_id ).val() ) - 1);
 
-				var total_price = parseFloat( $(('.q_')+product_id).val()  
-					* parseFloat( $(('.sub_price_')+product_id).html() )) ;
+				var total_price = parseFloat( $('.q_'+product_id).val()  
+					* parseFloat( $('.sub_price_'+product_id).html() )) ;
 
-				$(('.total_price_')+product_id).html( parseFloat(total_price).toFixed(2) );
+				$('.total_price_'+product_id).html( parseFloat(total_price).toFixed(2) );
 
 				var quantity =  parseInt($('.item-total').html());
 				var total = parseFloat($('.price-total').html());
-				var sub_price = parseFloat( $(('.sub_price_')+product_id).html() );
+				var sub_price = parseFloat( $('.sub_price_'+product_id).html() );
 			
 				total -= sub_price;
 
@@ -244,17 +244,17 @@
 			  }
 			);
 
-			$( ('.q_')+product_id ).val( parseInt( $( ('.q_')+product_id ).val()) + 1);		
+			$( '.q_'+product_id ).val( parseInt( $( ('.q_')+product_id ).val()) + 1);		
 				
 			var total_price = parseFloat( $(('.q_')+product_id).val()  
 				* parseFloat( $(('.sub_price_')+product_id).html() ));
 
-			$(('.total_price_')+product_id).html( parseFloat(total_price).toFixed(2) );
+			$('.total_price_'+product_id).html( parseFloat(total_price).toFixed(2) );
 
 			var total = parseFloat($('.price-total').html());
 			var quantity =  parseInt($('.item-total').html());
 
-			var sub_price = parseFloat( $(('.sub_price_')+product_id).html() );
+			var sub_price = parseFloat( $('.sub_price_'+product_id).html() );
 
 			total += sub_price;
 

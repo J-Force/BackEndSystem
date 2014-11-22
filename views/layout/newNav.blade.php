@@ -25,15 +25,7 @@
 							@if(!Auth::check())
 								<li><a href="{{ URL::route('account-create') }}">Sign Up</a></li>
 								<li><a href="{{ URL::route('account-sign-in') }}">Sign In</a></li>
-							@else
-								<!-- <li class="cart">
-									<a href="#">
-				                		<span class="glyphicon glyphicon-shopping-cart"></span>
-				                		<span class="badge alert-success bakset-count" style="margin-left:-5px">
-				                  			{{ Order::where('user_id' , '=' , Auth::user()->id )->count() }}
-				                		</span>
-				          </a>
-				        </li> -->
+              @else
                 @if(Entrust::hasRole('Admin'))                 
                   <li><a href="{{ URL::route('admin') }}"> Admin </a></li>
                 @endif
