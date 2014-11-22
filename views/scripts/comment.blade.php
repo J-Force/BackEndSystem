@@ -2,11 +2,10 @@
 
 	$(function(){
 
-		$('.send-comment').click(function(e){
-			e.preventDefault();
-
+		$("body").delegate(".send-comment","click",function(){
+			
 			var comment = $('textarea').val();
-
+			$('textarea').val('');
 			if(comment === '') {
 				alert('Please type your comment before submit');
 			}
@@ -20,32 +19,35 @@
 				            window.location.replace("http://128.199.212.108/jf-shop/user/sign_in");
 				        }
 				        review_id = res[1];
+				        updateReview(comment,product_id,review_id);
 					}
 				);
-
-				updateReview(comment,product_id,review_id);
 			}
 		});
 
-		$('.delete-comment').click(function(e) {
-			e.preventDefault();
+		$("body").delegate(".delete-comment","click",function() {
+			
 
 			var review_id = $(this).attr("review-id");
 			var product_id = $(this).attr("product-id");
 
-			$.post("/jf-shop/products/show/"+product_id+"/comment/"+ review_id +"/delete" ,
-			  { review_id:review_id , product_id:product_id},
-			  function(res,status){
+			var cf = confirm('Do you want to remove this review');
 
-			  }
-			);
+			if(cf) {
+				$.post("/jf-shop/products/show/"+product_id+"/comment/"+ review_id +"/delete" ,
+				  { review_id:review_id , product_id:product_id},
+				  function(res,status){
 
-			deleteReview(review_id,product_id);
+				  }
+				);
+
+				deleteReview(review_id,product_id);
+			}
 
 		});
 
-		$('.edit-comment').click(function(e){
-			e.preventDefault();
+		$("body").delegate(".edit-comment","click",function(){
+		
 
 			var review_id = $(this).attr("review-id");
 			var product_id = $(this).attr("product-id");
@@ -57,8 +59,8 @@
 			var edit_button = $(".edit-comment[review-id='"+ review_id +"']");
 			edit_button.replaceWith("<a class='btn btn-primary pull-right confirm-comment' review-id='"+review_id+"' product-id='"+product_id+"'>Confirm</a>");
 
-			$('.confirm-comment').click(function(e){
-				e.preventDefault();
+			$("body").delegate(".confirm-comment[review-id='"+ review_id +"']","click",function(){
+				
 				text = $("textarea[name='comment_"+ review_id +"']").val();
 				
 				$.post("/jf-shop/products/show/"+product_id+"/comment/"+review_id+"/edit",
@@ -101,6 +103,8 @@
 		    $('.seperate').after(output);
 		    var count = parseInt($('.count_'+product_id).html());
 		    $('.count_'+product_id).html(count+1);
+
+
 		}
 
 	});
