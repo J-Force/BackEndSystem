@@ -9,7 +9,7 @@
 		<br/>
 		<h1>Select Images</h1>
 		
-		{{ Form::open(array('url' => 'products/add-image', 'method' => 'post')) }}
+		{{ Form::open(array('url' => '/admin/products/add-image', 'method' => 'post')) }}
 		{{ Form::token() }}
 		{{ Form::hidden('product_id',$product->id) }}
 		{{ Form::submit(' ADD IMAGES TO PRODUCT ', array('class' => 'btn-success')) }}

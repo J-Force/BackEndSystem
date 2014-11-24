@@ -8,7 +8,7 @@
 	<div style="margin-left:100px;">
 		<br/>
 		<h1>Select Images</h1>
-		{{ Form::open(array('url' => 'products/remove-image', 'method' => 'delete')) }}
+		{{ Form::open(array('url' => '/admin/products/remove-image', 'method' => 'delete')) }}
 		{{ Form::token() }}
 		{{ Form::hidden('product_id',$product->id) }}
 		{{ Form::submit(' REMOVE ', array('class' => 'btn-danger')) }}

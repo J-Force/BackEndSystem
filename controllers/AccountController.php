@@ -9,7 +9,6 @@ class AccountController extends BaseController {
 				return View::make('account.index')->with('users', $users );
 			}
 		}
-
 		return Redirect::route('home')->with('fail' , 'Permission Denied');
 	}
 

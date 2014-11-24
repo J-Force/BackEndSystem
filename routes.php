@@ -164,50 +164,58 @@ Route::group(array('before' => 'auth'),function(){
 	/*
 		For Admin
 	*/
-	Route::get('/admin' , array(
-			'as' => 'admin' ,
-			'uses' => 'AdminController@index'
-	));
+	Route::group(array('prefix' => 'admin') , function() {
+		Route::get('/' , array(
+				'as' => 'admin' ,
+				'uses' => 'AdminController@index'
+		));
 
-	Route::get('/products' , array('as' => 'products' , 'uses' => 'ProductController@showProduct') );
+		Route::get('/products' , array('as' => 'products' , 'uses' => 'ProductController@showProduct') );
 
-	Route::get('/products-add', array('as' => 'product-add-view' , 'uses' => 'ProductController@showAddProduct') );
+		Route::get('/products-add', array('as' => 'product-add-view' , 'uses' => 'ProductController@showAddProduct') );
 
-	Route::post('products/create', array('before' => 'csrf','uses' => 'ProductController@addProduct'));
+		Route::post('/products/create', array('before' => 'csrf','uses' => 'ProductController@addProduct'));
 
-	Route::get('/products/{id}/edit', array('as' => 'product-edit-view' , 'uses' => 'ProductController@showEditProduct'));
+		Route::get('/products/{id}/edit', array('as' => 'product-edit-view' , 'uses' => 'ProductController@showEditProduct'));
 
-	Route::put('products/update', array('before' => 'csrf','uses' => 'ProductController@editProduct'));
+		Route::put('/products/update', array('before' => 'csrf','uses' => 'ProductController@editProduct'));
 
-	Route::delete('products/delete/{id}', array('uses' => 'ProductController@deleteProduct'));
+		Route::delete('/products/delete/{id}', array('uses' => 'ProductController@deleteProduct'));
 
-	Route::get('/products/{id}/add-image', array('as' => 'product-add-image' , 'uses' => 'ProductController@showAddImage'));
+		Route::get('/products/{id}/add-image', array('as' => 'product-add-image' , 'uses' => 'ProductController@showAddImage'));
 
-	Route::post('products/add-image', array('before' => 'csrf','uses' => 'ProductController@addProductImage'));
+		Route::post('products/add-image', array('before' => 'csrf','uses' => 'ProductController@addProductImage'));
 
-	Route::get('/products/{id}/remove-image', array('as' => 'product-remove-image','uses' => 'ProductController@showRemoveImage'));
+		Route::get('/products/{id}/remove-image', array('as' => 'product-remove-image','uses' => 'ProductController@showRemoveImage'));
 
-	Route::delete('products/remove-image', array('before' => 'csrf','uses' => 'ProductController@removeProductImage'));
+		Route::delete('products/remove-image', array('before' => 'csrf','uses' => 'ProductController@removeProductImage'));
 
 
-	Route::get('/users' , array(
-		'as' => 'users-all',
-		'uses' => 'AccountController@index'
-	));
+		Route::get('/users' , array(
+			'as' => 'users-all',
+			'uses' => 'AccountController@index'
+		));
 
-	Route::get('/images-all' , array(
-		'as' => 'image-all',
-		'uses' => 'ImageController@index'
-	));
+		Route::get('/images-all' , array(
+			'as' => 'image-all',
+			'uses' => 'ImageController@index'
+		));
 
-	Route::get('/upload' , array(
-		'as' => 'upload',
-		'uses' => 'ImageController@indexUpload'
-	));
+		Route::get('/upload' , array(
+			'as' => 'upload',
+			'uses' => 'ImageController@indexUpload'
+		));
 
-	Route::post('user/upload' ,'ImageController@uploadImage');
+		Route::post('user/upload' ,'ImageController@uploadImage');
 
-	Route::delete('image/delete/{id}', array('uses' => 'ImageController@deleteImage'));
+		Route::delete('image/delete/{id}', array('uses' => 'ImageController@deleteImage'));
+
+		Route::get('/orders' , array(
+			'as' => 'order-all',
+			'uses' => 'OrderController@getActiveOrder'
+		));
+	}); 
+	
 
 	/*
 		Change password (GET)

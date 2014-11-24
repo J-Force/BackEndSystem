@@ -54,9 +54,19 @@ class ProductController extends BaseController {
 
 		if(Auth::check()) {
 			if( Entrust::hasRole('Admin') ) {
-				$validator= Product::validate(Input::all());
+				$validator = Validator::make(Input::all(),array(
+						'name' 					=> 'required|max:255',
+						'cost'  				=> 'required|regex:/^\d*(\.\d{2})?$/',
+						'price' 				=> 'required|regex:/^\d*(\.\d{2})?$/',
+						'description'			=> 'required|max:255',
+						'weight'				=> 'required|regex:/^\d*(\.\d{2})?$/',
+						'size'					=> 'required|max:5',
+						'sex'					=> 'required|max:1',
+						'quantity'				=> 'required|integer',
+					));
 				if($validator->fails()) {
-					return Redirect::route('product-add-view')->withErrors($validator)->withInput();
+					return Redirect::route('product-add-view')
+					               ->withErrors($validator)->withInput();
 				}
 				else {
 					Product::create(array(
@@ -95,9 +105,22 @@ class ProductController extends BaseController {
 		if(Auth::check()) {
 			if( Entrust::hasRole('Admin') ) {
 				$id = Input::get('id');
-				$validator = Product::validate(Input::all());
+				$validator = Validator::make(Input::all(),array(
+						'name' 					=> 'required|max:255',
+						'cost'  				=> 'required|regex:/^\d*(\.\d{2})?$/',
+						'price' 				=> 'required|regex:/^\d*(\.\d{2})?$/',
+						'description'			=> 'required|max:255',
+						'weight'				=> 'required|regex:/^\d*(\.\d{2})?$/',
+						'size'					=> 'required|max:5',
+						'sex'					=> 'required|max:1',
+						'quantity'				=> 'required|integer',
+					));
+
 				if($validator->fails()) {
-					return Redirect::route('product-edit-view',$id)->withErrors($validator);
+					
+					return Redirect::route('product-edit-view',$id)
+					                ->withErrors($validator)
+					                ->withInput();
 				}
 				else {
 					Product::where('id', $id)->update(array(

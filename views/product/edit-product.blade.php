@@ -8,7 +8,7 @@
 		<br/>
 		<h1>Edit Product : {{ $product->name }}</h1>
 		@if($errors->has())
-		<ul>
+		<ul class="error">
 			{{ $errors->first('name','<li>:message</li>') }}
 			{{ $errors->first('description','<li>:message</li>') }}
 			{{ $errors->first('cost','<li>:message</li>') }}
@@ -19,7 +19,7 @@
 			{{ $errors->first('quantity','<li>:message</li>') }}
 		</ul>
 		@endif
-		{{ Form::open(array('url' => 'products/update', 'method' => 'put')) }}
+		{{ Form::open(array('url' => '/admin/products/update', 'method' => 'put')) }}
 		{{ Form::token() }}
 		<p>
 			{{ Form::label('name') }}<br/>
@@ -59,4 +59,9 @@
 		</p>
 		{{ Form::close() }}
 	</div>
+	<style>
+		.error li {
+			color:red;
+		}
+	</style>
 @endsection

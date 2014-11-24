@@ -27,6 +27,29 @@ class OrderController extends BaseController {
 		
 	}
 
+	public function getActiveOrder() {
+		if(Auth::check()) {
+			if( Entrust::hasRole('Admin') ) {
+				$actives = Active::all();
+
+				foreach($actives as $active) 
+				{
+					$order = Order::find($active->order_id);
+					$user = User::find($active->user_id);
+
+					$product = Product::find($order->product_id);
+
+					$active->product = $product;
+					$active->user = $user;
+					$active->order = $order;
+
+				}
+				return View::make('order.showactive')->with('actives',$actives);
+			}
+		}
+		return Redirect::route('home')->with('fail' , 'Permission Denied');
+	}
+
 	public function getOrderToCartPop() {
 			
 			$user = Auth::user();

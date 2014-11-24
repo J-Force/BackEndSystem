@@ -7,31 +7,6 @@
 	    overflow: hidden;
 	}
 </style>
-<script type="text/javascript">
-
-	$(document).ready(function(){
-
-		$('.remove').click(function(e){
-
-		    e.preventDefault();
-
-		    var r = confirm('Do you want to remove this order line?');
-
-		    if( r ) {
-	     		$.post( "/jf-shop/user/orders/remove_cart", 
-	     			{ 
-	     				product_id:  $(this).attr("id")  
-	     			}, function(res,status) {
-	     				
-				});
-
-	     		$(('.order_des_')+ $(this).attr("id")).hide();
-     		}
-			
- 		});
-
-	});
-</script>
 	
 	<div id="content">
 		{{ $images->links() }}

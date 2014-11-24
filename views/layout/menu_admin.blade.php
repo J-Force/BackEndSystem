@@ -147,4 +147,5 @@
 <li><a href="{{ URL::route('product-add-view') }}">Add Product</a></li>
 <li><a href="{{ URL::route('upload') }}">Upload Image</a></li>
 <li><a href="{{ URL::route('image-all') }}">Show Images</a></li>
+<li><a href="{{ URL::route('order-all')}}">Show Active Orders</a></li>
 </ul>

@@ -19,7 +19,7 @@
 			{{ $errors->first('quantity','<li>:message</li>') }}
 		</ul>
 		@endif
-		{{ Form::open(array('url' => 'products/create')) }}
+		{{ Form::open(array('url' => '/admin/products/create')) }}
 		{{ Form::token() }}
 		<p>
 			{{ Form::label('name') }}<br/>
