@@ -102,15 +102,21 @@
 				function(res,status){
 					if(res.rate) {
 						var rate = parseInt(res.rate);
+						var left = 5 - rate;
 						var star = "";
+						var star_left = "";
 						for(var i = 0 ; i < rate ;i++) {
 							star += "<span class='star_"+i+" ratings_voted' value='"+i+"' id='"+product_id+"'></span>";
+						}
+						for(var j = 0 ; j < left ; j++) {
+							star_left += "<span class='"+ j+" ratings_stared' value='"+j+"' id='"+ product_id +"'></span>"; 
 						}
 						var output =  [ "<div class='row row_" +review_id+"'>",
 								            "<div class='col-md-12'>",
 								               "<span class='rate_widget_"+review_id+"'>", 
 								               "@if(Auth::check())",
 				                    				star,
+				                    				star_left,
 				                				"</span>",
 								                "{{ Auth::user()->first_name.' '.Auth::user()->last_name }}",
 								                "@endif",

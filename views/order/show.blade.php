@@ -138,7 +138,7 @@
 
 			var product_id = $(this).attr('id');
 			var quantity = parseInt($(this).val());
-
+			changeColor();
 			if(quantity <= 0) {
 				$(this).val(1);
 				quantity = 1;
@@ -159,9 +159,6 @@
 
 			$('.total_price_'+product_id).html( parseFloat(total_price).toFixed(2) );
 
-			
-			
-
 		});
 
 		$('.remove').click(function(e){
@@ -178,7 +175,7 @@
 	     				product_id:  product_id 
 	     			}, function(res,status) {}
 	     		);
-
+	     		changeColor();
 	     		$('.order_des_'+ product_id).remove();
 
 
@@ -205,7 +202,7 @@
 			if($(('.q_')+$(this).attr("id")).val() > 1 ) {
 
 				var product_id = $(this).attr("id");
-
+				changeColor();
 				$.post( "/jf-shop/user/orders/decrease" , 
 					{ product_id: $(this).attr("id") ,quantity:1 } ,
 					function(res,status){}
@@ -236,8 +233,9 @@
 			e.preventDefault();
 
 			var product_id = $(this).attr("id");
- 
-			  $.post( "/jf-shop/user/orders/increase" , 
+ 			changeColor();
+
+			$.post( "/jf-shop/user/orders/increase" , 
 			  { product_id: product_id , quantity: 1 } ,
 			  function(res,status){
 			  	console.log(res);
@@ -264,6 +262,7 @@
 		});
 
 		function update() {
+
 			$.get( "/jf-shop/user/orders/callback" ,
 				   {} , 
 				   function(res,data) {
@@ -273,6 +272,13 @@
 			);
 
 		
+		}
+
+		function changeColor() {
+			$('#cart-dropdown').css( 'background-color' , '#ffbe56' );
+	        setTimeout( function() {
+	          $('#cart-dropdown').css( 'background-color' , '#40E0D0' );
+	        },1000);
 		}
 
 	});

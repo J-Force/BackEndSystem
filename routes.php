@@ -126,14 +126,6 @@ Route::group(array('before' => 'auth'),function(){
 			'uses' => 'OrderController@getOrderToCartPop'
 		));
 
-		/*
-			Clear cart when close browser
-		*/
-		Route::post('/user/orders/clear_when_sign_out',array(
-			'as' => 'user-order-clear',
-			'uses' => 'OrderController@clearWhenLogout'
-		));
-
 		Route::post('/products/show/{id}/comment',array(
 			'as' => 'comment',
 			'uses' => 'ReviewController@commitComment'

@@ -280,10 +280,14 @@
                     foreach($rates as $r) {
                         $rate += $r->rate;
                     }
+                    $rate_left = 5 - $rate;
                 ?>
                 <span class="rate_widget_{{ $review->id }}">
                 @for($i = 0; $i < $rate ; $i++)
                     <span class="star_{{ $i }} ratings_voted" value="{{$i}}" id="{{ $review->product_id }}"></span>
+                @endfor
+                @for($i = 0; $i < $rate_left ; $i++)
+                    <span class="star_{{ $i }} ratings_stared" value="{{$i}}" id="{{ $review->product_id }}"></span>
                 @endfor
                 </span>
                 {{ $user->first_name.' '.$user->last_name }}

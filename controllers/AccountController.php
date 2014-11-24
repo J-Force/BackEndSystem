@@ -17,7 +17,8 @@ class AccountController extends BaseController {
 		$user = Auth::user();
 
 		if($user) {
-			DB::table('orders')->where('user_id','=',$user->id)->delete();
+			Active::where('user_id','=',$user->id)->delete();
+			Order::where('user_id','=',$user->id)->delete();			
 			Auth::logout();
 			return Redirect::route('home')->with('success','Sign out');
 		}

@@ -63,6 +63,13 @@ class OrderController extends BaseController {
 					) 
 				);
 
+				$active = Active::firstOrCreate(
+					array(
+						'user_id' => $user->id,
+						'order_id' => $order->id
+					)
+				);
+
 				if(Input::get('type')) {
 					$order->quantity = $quantity;
 				} else {
@@ -85,8 +92,7 @@ class OrderController extends BaseController {
 				$product_id = Input::get('product_id');
 
 				$order = Order::where('user_id' , '=' , $user->id )
-				                ->where('product_id','=',$product_id)->get();
-
+				                ->where('product_id','=',$product_id)->get();    
 
 				foreach( $order as $o ) {
 					$o->quantity += $quantity;
@@ -131,13 +137,6 @@ class OrderController extends BaseController {
 
 			}
 		
-	}
-
-	public function clearWhenLogout() {
-
-		$user = Auth::user();
-		DB::table('orders')->where('user_id','=',$user->id)->delete();
-
 	}
 
 	public function callbackTotalPrice() {
