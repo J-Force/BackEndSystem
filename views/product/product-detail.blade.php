@@ -11,7 +11,7 @@
 <div class="container" style="margin-top:30px">
   	<div class="row">        
         <div class="col-md-12">
-            <!--- start-content---->
+            <!--- start-content -->
             <div class="content details-page">
             <!-- Include the Etalage files -->
 	            <script>
@@ -100,7 +100,30 @@
                             <h1>{{ $product->name }}</h1>
                             <label>Product ID : {{ $product->id }}</label>
                             <ul class="pro-rate">
-                                <li><a class="product-rate" href="#"> <label> </label></a> <span> </span></li>
+                                <li>
+                                    <?php
+                                        $rates = Rate::where('product_id','=',$product->id)->get();
+                                        $sum = 0;
+                                        foreach($rates as $rate) {
+                                            $sum += $rate->rate;
+                                        }
+
+                                        if($rates->count() > 0)
+                                            $avg = $sum / $rates->count();
+                                        else
+                                            $avg = $sum / 1;
+
+                                        $left = 5 - $avg;
+                                    ?>
+                                    <span class="rate_widget">
+                                        @for($i = 0 ; $i < $avg ;$i++)
+                                            <span class="star_{{$i}} ratings_voted" value="{{$i}}" id="{{ $product->id }}"></span>
+                                        @endfor
+                                        @for($j = 0 ; $j < $left ;$j++)
+                                            <span class="star_{{$j}} ratings_stared" value="{{$j}}" id="{{ $product->id }}"></span>
+                                        @endfor
+                                    </span>
+                                </li>
                                 <li><a href="#"><h5><span class="count_{{ $product->id }}">{{ $reviews->count() }}</span> Review(s)</h5></a></li>
                             </ul>
          					<label style="font-size:20px">Size : {{ $product->size }}</label>
@@ -206,18 +229,42 @@
         <div class="text-left comment"> 
             <textarea col="100" row="30" name="comment"></textarea>
         </div>
-        <a class="btn btn-success send-comment pull-right" id="{{ $product->id }}">Leave a Review</a>
-        </br></br>
+        <div class="col-md-12">
+            <?php
+                $count = 0;
+                if(Auth::check()){
+                    $user = Auth::user();
+                    $rates = $rates = Rate::where('user_id','=',$user->id)
+                                  ->where('product_id','=' , $product->id)->get();
+                    $count = $rates->count();
+                }
+            ?>
+
+            @if($count==0)
+                @if(Auth::check())
+                    <span class="rate_widget {{$user->id}}" >
+                @else
+                    <span class="rate_widget" >
+                @endif
+                        <span class="star_1 ratings_stars" value="1" id="{{ $product->id }}"></span>
+                        <span class="star_2 ratings_stars" value="2" id="{{ $product->id }}"></span>
+                        <span class="star_3 ratings_stars" value="3" id="{{ $product->id }}"></span>
+                        <span class="star_4 ratings_stars" value="4" id="{{ $product->id }}"></span>
+                        <span class="star_5 ratings_stars" value="5" id="{{ $product->id }}"></span>
+                </span>
+            @endif
+            @if(Auth::check())
+                <a class="btn btn-success send-comment pull-right" id="{{ $product->id }}" user-id="{{$user->id}}">Leave a Review</a>
+            @else
+               <a class="btn btn-success send-comment pull-right" id="{{ $product->id }}" >Leave a Review</a>
+            @endif
+        </div></br></br>
+        
         <hr class="seperate">
         @foreach($reviews as $review)    
         <div class="row row_{{$review->id}}" >
             <div class="col-md-12">
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
-                <?php
+                 <?php
                     $user = User::find($review->user_id);
                     $date_comment = date_create($review->updated_at);
 
@@ -225,16 +272,29 @@
                     $date_current = date_create($date_current->format('Y-m-d H:i:s'));
 
                     $comment = Comment::find($review->comment_id);
-
                     $interval = date_diff($date_current,$date_comment);
+                    $rates = Rate::where('user_id','=',$user->id)
+                                  ->where('product_id','=' , $review->product_id)->get();
+
+                    $rate = 0;
+                    foreach($rates as $r) {
+                        $rate += $r->rate;
+                    }
                 ?>
+                <span class="rate_widget_{{ $review->id }}">
+                @for($i = 0; $i < $rate ; $i++)
+                    <span class="star_{{ $i }} ratings_voted" value="{{$i}}" id="{{ $review->product_id }}"></span>
+                @endfor
+                </span>
                 {{ $user->first_name.' '.$user->last_name }}
                 <span class="pull-right">{{ $interval->format('%a days %h hours %i minutes %s seconds').' agos'; }}</span>
                 <p class="{{$review->id}}">{{ $comment->text }}</p>
-                @if(Auth::user()->id == $review->user_id)
-                    <a class="btn btn-danger pull-right delete-comment" review-id="{{$review->id}}" product-id="{{$review->product_id}}">Delete</a>
-                    <a class="btn btn-primary pull-right edit-comment" review-id="{{$review->id}}" product-id="{{$review->product_id}}">Edit</a><p>  
-                @endif   
+                @if(Auth::check())
+                    @if(Auth::user()->id == $review->user_id)
+                        <a class="btn btn-danger pull-right delete-comment" review-id="{{$review->id}}" product-id="{{$review->product_id}}">Delete</a>
+                        <a class="btn btn-primary pull-right edit-comment" review-id="{{$review->id}}" product-id="{{$review->product_id}}">Edit</a> 
+                    @endif  
+                @endif 
             </div>
         </div>
         <hr class="end-seperate_{{$review->id}}">
@@ -243,6 +303,7 @@
 </div>
 @include('scripts.confirmRemove')
 @include('scripts.comment')
+@include('scripts.rate')
 <style>
     textarea {
         width:100%;
@@ -251,5 +312,44 @@
         max-height: 200px;
         padding: 10px 10px 10px 10px;
     }
+
+    .rate_widget {
+        overflow:   visible;
+        padding:    10px;
+        position:   relative;
+        width:      256px;
+        height:     32px;
+    }
+    .ratings_stars {
+        background: url('/jf-shop/images/star_empty.png') no-repeat;
+        float:      left;
+        height:     22px;
+        padding:    0px;
+        width:      26px;
+    }
+
+    .ratings_stared {
+        background: url('/jf-shop/images/star_empty.png') no-repeat;
+        float:      left;
+        height:     22px;
+        padding:    0px;
+        width:      26px;
+    }
+    .ratings_vote {
+        background: url('/jf-shop/images/star_full.png') no-repeat;
+    }
+
+    .ratings_voted {
+        background: url('/jf-shop/images/star_full.png') no-repeat;
+        float:      left;
+        height:     22px;
+        padding:    0px;
+        width:      26px;
+    }
+
+    .rate_widget .ratings_over {
+        background: url('/jf-shop/images/star_highlight.png') no-repeat;
+    }
+
 </style>
 @endsection

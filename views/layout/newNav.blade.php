@@ -49,7 +49,7 @@
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i></a>
 									<ul class="dropdown-menu">
 										<li><a href="{{ URL::route('profile-user') }}">Account Settings</a></li>
-										<li><a href="{{ URL::route('account-sign-out') }}">Log Out</a></li>
+										<li><a class="sign_out" href="{{ URL::route('account-sign-out') }}">Log Out</a></li>
 									</ul>
 								</li>
 							@endif
@@ -63,50 +63,50 @@
 		<!-- /.container -->
 	</nav>
 </div>
-<script type="text/javascript">
+<script>
  $(document).ready(function(){
-  var submitIcon = $('.searchbox-icon');
-  var inputBox = $('.searchbox-input');
-  var searchBox = $('.searchbox');
-  var rightMenu = $('.navbar-right');
-  var isOpen = false;
-  submitIcon.click(function(){
-   if(isOpen == false){
-    searchBox.addClass('searchbox-open');
-    inputBox.focus();
-    isOpen = true;
-    rightMenu.hide();
+    var submitIcon = $('.searchbox-icon');
+    var inputBox = $('.searchbox-input');
+    var searchBox = $('.searchbox');
+    var rightMenu = $('.navbar-right');
+    var isOpen = false;
+    submitIcon.click(function(){
+     if(isOpen == false){
+      searchBox.addClass('searchbox-open');
+      inputBox.focus();
+      isOpen = true;
+      rightMenu.hide();
 
-   } else {
-    searchBox.removeClass('searchbox-open');
-    inputBox.focusout();
-    isOpen = false;
-    rightMenu.show();
-   }
-  }); 
-   submitIcon.mouseup(function(){
-    return false;
-   });
-   searchBox.mouseup(function(){
-    return false;
-   });
-  $(document).mouseup(function(){
-   if(isOpen == true){
-    $('.searchbox-icon').css('display','block');
-    submitIcon.click();
-  }
+     } else {
+      searchBox.removeClass('searchbox-open');
+      inputBox.focusout();
+      isOpen = false;
+      rightMenu.show();
+     }
+    }); 
+     submitIcon.mouseup(function(){
+      return false;
+     });
+     searchBox.mouseup(function(){
+      return false;
+     });
+    $(document).mouseup(function(){
+     if(isOpen == true){
+      $('.searchbox-icon').css('display','block');
+      submitIcon.click();
+    }
+    });
   });
-});
-function buttonUp(){
- var inputVal = $('.searchbox-input').val();
- inputVal = $.trim(inputVal).length;
- if( inputVal !== 0){
-  $('.searchbox-icon').css('display','none');
- } else {
-  $('.searchbox-input').val('');
-  $('.searchbox-icon').css('display','block');
- }
-}
+  function buttonUp(){
+   var inputVal = $('.searchbox-input').val();
+   inputVal = $.trim(inputVal).length;
+   if( inputVal !== 0){
+    $('.searchbox-icon').css('display','none');
+   } else {
+    $('.searchbox-input').val('');
+    $('.searchbox-icon').css('display','block');
+   }
+  }
 </script>
 <script>
 $(document).ready(function(){

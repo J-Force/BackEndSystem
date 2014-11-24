@@ -126,6 +126,14 @@ Route::group(array('before' => 'auth'),function(){
 			'uses' => 'OrderController@getOrderToCartPop'
 		));
 
+		/*
+			Clear cart when close browser
+		*/
+		Route::post('/user/orders/clear_when_sign_out',array(
+			'as' => 'user-order-clear',
+			'uses' => 'OrderController@clearWhenLogout'
+		));
+
 		Route::post('/products/show/{id}/comment',array(
 			'as' => 'comment',
 			'uses' => 'ReviewController@commitComment'
@@ -139,6 +147,23 @@ Route::group(array('before' => 'auth'),function(){
 		Route::post('/products/show/{id}/comment/{review_id}/edit',array(
 			'as' => 'edit-comment',
 			'uses' => 'ReviewController@editComment'
+		));
+
+		/*
+			Rating product
+		*/
+		Route::post('/products/show/{id}/rate',array(
+			'as' => 'rate',
+			'uses' => 'ReviewController@commitVote'
+		));
+
+
+		/*
+			get Rating product
+		*/
+		Route::get('/products/show/{id}/getRate',array(
+			'as' => 'get-rate',
+			'uses' => 'ReviewController@getVote'
 		));
 
 

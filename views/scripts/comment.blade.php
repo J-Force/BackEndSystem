@@ -1,9 +1,10 @@
 <script>
 
 	$(function(){
-
+		
 		$("body").delegate(".send-comment","click",function(){
 			
+
 			var comment = $('textarea').val();
 			$('textarea').val('');
 			if(comment === '') {
@@ -11,6 +12,7 @@
 			}
 			else {
 				var product_id = $(this).attr("id");
+				var user_id = $(this).attr("user-id");
 				var review_id;
 
 				$.post("/jf-shop/products/show/"+product_id+"/comment" , { product_id:product_id , comment: comment} ,
@@ -19,7 +21,7 @@
 				            window.location.replace("http://128.199.212.108/jf-shop/user/sign_in");
 				        }
 				        review_id = res[1];
-				        updateReview(comment,product_id,review_id);
+				        updateReview(comment,product_id,review_id,user_id);
 					}
 				);
 			}
@@ -45,6 +47,8 @@
 			}
 
 		});
+
+
 
 		$("body").delegate(".edit-comment","click",function(){
 		
@@ -78,6 +82,13 @@
 			
 		});
 
+		$('body').delegate('.ratings_stars', 'click', function() {
+           
+   		    rate = parseInt($(this).attr("value"));
+
+   		});
+
+
 		function deleteReview(review_id,product_id) {
 			$('.row_'+review_id).remove();
 			$('.end-seperate_'+review_id).remove();
@@ -85,25 +96,40 @@
 			$('.count_'+product_id).html(count-1);
 		}
 
-		function updateReview(comment,product_id,review_id) {
-		 	var output =  [ "<div class='row row_" +review_id+"'>",
-				            "<div class='col-md-12'>",
-				                "<span class='glyphicon glyphicon-star'></span>",
-				                "<span class='glyphicon glyphicon-star'></span>",
-				                "<span class='glyphicon glyphicon-star'></span>",
-				                "<span class='glyphicon glyphicon-star'></span>",
-				                "<span class='glyphicon glyphicon-star-empty'></span>",
-				                "{{ Auth::user()->first_name.' '.Auth::user()->last_name }}",
-				                "<span class='pull-right'> Few seconds agos </span>",
-				                "<p class='"+review_id+"'>"+comment+"</p>",
-                    			"<a class='btn btn-danger pull-right delete-comment' review-id='"+ review_id +"' product-id='"+ product_id+"'>Delete</a>",
-                    			"<a class='btn btn-primary pull-right edit-comment' review-id='"+review_id+"' product-id='"+ product_id+"'>Edit</a>", 
-				            "</div>",
-				        "</div>" , "<hr class='end-seperate_"+ review_id +"'>"].join("");
-		    $('.seperate').after(output);
-		    var count = parseInt($('.count_'+product_id).html());
-		    $('.count_'+product_id).html(count+1);
+		function updateReview(comment,product_id,review_id,user_id) {
+		
+			$.get('/jf-shop/products/show/'+product_id+'/getRate' , {product_id:product_id} ,
+				function(res,status){
+					if(res.rate) {
+						var rate = parseInt(res.rate);
+						var star = "";
+						for(var i = 0 ; i < rate ;i++) {
+							star += "<span class='star_"+i+" ratings_voted' value='"+i+"' id='"+product_id+"'></span>";
+						}
+						var output =  [ "<div class='row row_" +review_id+"'>",
+								            "<div class='col-md-12'>",
+								               "<span class='rate_widget_"+review_id+"'>", 
+								               "@if(Auth::check())",
+				                    				star,
+				                				"</span>",
+								                "{{ Auth::user()->first_name.' '.Auth::user()->last_name }}",
+								                "@endif",
+								                "<span class='pull-right'> Few seconds agos </span>",
+								                "<p class='"+review_id+"'>"+comment+"</p>",
+				                    			"<a class='btn btn-danger pull-right delete-comment' review-id='"+ review_id +"' product-id='"+ product_id+"'>Delete</a>",
+				                    			"<a class='btn btn-primary pull-right edit-comment' review-id='"+review_id+"' product-id='"+ product_id+"'>Edit</a>", 
+								            "</div>",
+								        "</div>" , "<hr class='end-seperate_"+ review_id +"'>"].join("");
+						    $('.seperate').after(output);
+						    var count = parseInt($('.count_'+product_id).html());
+						    $('.count_'+product_id).html(count+1);
+						    $('.' +user_id).hide();
 
+					} 
+				}
+			);
+
+		 	
 
 		}
 

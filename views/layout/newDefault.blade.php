@@ -78,15 +78,25 @@
 	</body>
 </html>
 <script type="text/javascript">
+
+	// $(window).bind("beforeunload" , function(e) {
+	// 	e.preventDefault();
+
+	// 	$.post("/jf-shop/user/orders/clear_when_sign_out",{},
+	// 	  	function(res,status){
+
+	// 	  	} 
+	// 	);
+		
+	//   	return 'If you leave , your order will be clear';
+	// });
+
+
 	if(document.getElementById("notice")!== null)
         $('#notice').delay(3000).fadeOut(1000);
-</script>
 
-<script>
-
-$(document).ready(function(){
-  $('.alert').fadeOut( 3000 );
-});
-  
+    $(document).ready(function(){
+	  $('.alert').fadeOut( 3000 );
+	});
 
 </script>

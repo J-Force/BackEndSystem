@@ -124,13 +124,20 @@ class OrderController extends BaseController {
 		
 			$user = Auth::user();
 
-			if($user){
+			if($user) {
 
 				$product_id = Input::get('product_id');
 				DB::table('orders')->where('product_id' , '=' , $product_id )->delete();
 
 			}
 		
+	}
+
+	public function clearWhenLogout() {
+
+		$user = Auth::user();
+		DB::table('orders')->where('user_id','=',$user->id)->delete();
+
 	}
 
 	public function callbackTotalPrice() {

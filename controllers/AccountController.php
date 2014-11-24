@@ -14,8 +14,14 @@ class AccountController extends BaseController {
 	}
 
 	public function getSignOut() {
-		Auth::logout();
-		return Redirect::route('home')->with('success','Sign out');
+		$user = Auth::user();
+
+		if($user) {
+			DB::table('orders')->where('user_id','=',$user->id)->delete();
+			Auth::logout();
+			return Redirect::route('home')->with('success','Sign out');
+		}
+		return Redirect::route('home')->with('fail','You are not sign in');
 	}
 
 	public function getSignIn() {

@@ -47,5 +47,35 @@ class ReviewController extends BaseController {
 		DB::table('comment')->where('id', $review->comment_id)
 		    			    ->update(array('text' => $text));
 	}
+
+	public function commitVote() {
+		$user = Auth::user();
+
+		$rate = Rate::where('user_id','=',$user->id)
+		              ->where('product_id','=', Input::get('product_id'))->first();
+
+
+		if($rate) {
+			$rate->rate = Input::get('rate');
+			$rate->save();
+		} else {
+			Rate::create(array(
+				'user_id' => $user->id,
+				'product_id' => Input::get('product_id'),
+				'rate' => Input::get('rate')
+			));
+		}
+		
+		return $rate;
+	}
+
+	public function getVote() {
+		$user = Auth::user();
+
+		$rate = Rate::where('user_id','=',$user->id)
+		              ->where('product_id','=', Input::get('product_id'))->first();
+
+		return $rate;
+	}
 	
 }
