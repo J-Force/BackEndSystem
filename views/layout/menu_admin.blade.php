@@ -44,13 +44,13 @@
    content: "\f187";
   }
   .menu li a.pencil:before {
-   content: "\f040";
+   content: "\f06B";
   }
   .menu li a.contact:before {
-   content: "\f003";
+   content: "\f03E";
   }
   .menu li a.about:before {
-   content: "\f007";
+   content: "\f080";
   }
   .menu li a.home:before {
    content: "\f039";
@@ -135,17 +135,17 @@
 </script>
 <ul class="menu">
 <li title="menu"><a href="#" class="menu-button home">menu</a></li>
-<li title="search"><a href="#" class="search">search</a></li>
-<!-- <li title="pencil"><a href="#" class="pencil">pencil</a></li>
-<li title="about"><a href="#" class="active about">about</a></li>
-<li title="archive"><a href="#" class="archive">archive</a></li>
-<li title="contact"><a href="#" class="contact">contact</a></li> -->
+<li title="search"><a href="{{ URL::route('product-search-view') }}" class="search">search</a></li>
+<li title="pencil"><a href="{{ URL::route('promotion')}}" class="pencil">promotion</a></li>
+<li title="about"><a href="{{ URL::route('report') }}" class="active about">report</a></li>
+<!-- <li title="archive"><a href="#" class="archive">archive</a></li> -->
+<li title="contact"><a href="{{ URL::route('image-all') }}" class="contact">Image</a></li>
 </ul>
 <ul class="menu-bar">
-<li><a href="#" class="menu-button">Menu</a></li>
+<li><a href="{{ URL::route('admin') }}">Menu</a></li>
 <li><a href="{{ URL::route('products') }}">Show Products</a></li>
-<li><a href="{{ URL::route('product-add-view') }}">Add Product</a></li>
 <li><a href="{{ URL::route('upload') }}">Upload Image</a></li>
-<li><a href="{{ URL::route('image-all') }}">Show Images</a></li>
-<li><a href="{{ URL::route('order-all')}}">Show Active Orders</a></li>
+<li><a href="{{ URL::route('category-add-view') }}">Add Category</a></li>
+<li><a href="{{ URL::route('get.hot.product') }}">Edit Hot Items</a></li>
+<li><a href="{{ URL::route('bill-history')}}">Orders History</a></li>
 </ul>

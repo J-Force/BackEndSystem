@@ -55,7 +55,7 @@
 	        {{ Session::get('fail') }}
 	    </div>
 		@endif
-		<script src="/jf-shop/js/jquery.js"></script>	 
+		<script src="/jf-shop/js/jquery.js"></script>	  
 		<script src="/jf-shop/js/bootstrap.min.js"></script>
 		<script src="/jf-shop/js/jquery.sticky.js"></script>
 		<script src="/jf-shop/js/jquery.easing.min.js"></script>	

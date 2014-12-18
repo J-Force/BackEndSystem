@@ -1,11 +1,10 @@
 <?php
 
-class Product extends Eloquent{
-	protected $table = 'products';
-	protected $fillable = array('name', 'description', 'cost', 'price', 'weight', 'size', 'sex', 'quantity','category_id');
+class Category extends Eloquent{
+	protected $table = 'category';
+	protected $fillable = array('name');
 	public static $rules = array(
 		'name'=>'required',
-		'description'=>'required'
 	);
 
 	public static function validate($data) {
@@ -15,9 +14,7 @@ class Product extends Eloquent{
 	public function delete()
     {
         // Delete all of the products that have the same ids...
-        Order::where("product_id",$this->id)->delete();
-        ProductImage::where("product_id", $this->id)->delete();
-
+        Product::where("category_id",$this->id)->update(array('category_id' => 4));;
         // Finally, delete this image...
         return parent::delete();
     }

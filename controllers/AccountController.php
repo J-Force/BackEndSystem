@@ -16,8 +16,8 @@ class AccountController extends BaseController {
 		$user = Auth::user();
 
 		if($user) {
-			Active::where('user_id','=',$user->id)->delete();
-			Order::where('user_id','=',$user->id)->delete();			
+			// Active::where('user_id','=',$user->id)->delete();
+			// Order::where('user_id','=',$user->id)->delete();			
 			Auth::logout();
 			return Redirect::route('home')->with('success','Sign out');
 		}
@@ -216,7 +216,7 @@ class AccountController extends BaseController {
 
 
 					return Redirect::route('home')
-							->with('fail' , 'The system send mail to your email about new password');
+							->with('success' , 'The system send mail to your email about new password');
 				}
 
 			}
@@ -225,7 +225,7 @@ class AccountController extends BaseController {
 		}
 
 		return Redirect::route('account-forgot-password')
-				->with('success' , 'Could not request new password');
+				->with('fail' , 'Could not request new password');
 	}
 
 }

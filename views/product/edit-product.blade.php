@@ -49,6 +49,10 @@
 			{{ Form::label('sex : M or F') }}<br/>
 			{{ Form::text('sex',$product->sex) }}
 		</p>
+		<p>{{ Form::label('Category') }} -> Old : {{ $old_category }}<br/>
+		   {{ Form::select('category' , $category , array(
+		                  'class' => 'btn btn-default dropdown-toggle')) }}
+		</p>
 		<p>
 			{{ Form::label('quantity : example 10') }}<br/>
 			{{ Form::text('quantity',$product->quantity) }}

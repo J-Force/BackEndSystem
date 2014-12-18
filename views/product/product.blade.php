@@ -35,7 +35,7 @@
          <td><center><a href="{{ URL::route('product-add-image',array($product -> id)) }}" class="btn btn-primary">Add Image</a></center></td>
          <td><center><a href="{{ URL::route('product-remove-image',array($product -> id)) }}" class="btn btn-danger">Remove Image</a></center></td>
          <td><center>
-          <a href="/admin/products/delete/{{$product->id}}" class="btn btn-danger" data-method="delete" data-confirm="Are you sure?">Remove</a>
+          <a href="/jf-shop/admin/products/delete/{{$product->id}}" class="btn btn-danger" data-method="delete" data-confirm="Are you sure?">Remove</a>
           <!-- {{ Form::open(array('url' => 'products/delete','method' => 'delete')) }}
           {{ Form::token() }}
           {{ Form::hidden('id',$product->id) }}

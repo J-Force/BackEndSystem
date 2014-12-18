@@ -22,13 +22,21 @@
             }
             $images = Images::whereIn('id',$ids)->take(1)->get();
           ?>
-          <div class="thumbnail">
+          <div class="thumbnail overflow-hidden">
             <figure>
               @if($images->count() == 0)
                 <div><img src="/jf-shop/images/no-image.png" alt="" width="360" height="360"></div>
+                @if($product->promo_product)
+                    <h5 style="position:absolute">Sale</h5>
+                @endif
               @endif
               @foreach ($images as $image) 
-                <div><img src="/jf-shop/{{ $image->link }}" alt="" width="360" height="360"></div>
+                <div>
+                <img src="/jf-shop/{{ $image->link }}" alt="" width="360" height="360">
+                  @if($product->sale != 0)
+                    <h5 class="promotion-banner">Sale</h5>
+                  @endif
+                </div>
               @endforeach
               <figcaption>
                 <h3>ID : {{ $product->id }}</h3>
@@ -39,21 +47,25 @@
             </figure>
             <div class="caption text-center">
               <h5>{{ $product -> name }}</h5>
-              <h6>THB <span class="price_{{ $product->id }}">{{ $product -> price }}</span></h6>
               
+              <h6>
+              
+                @if($product->type == 1)
+                  <s>THB <span class="ori_price_{{ $product->id }}">{{ $product->price }}</span></s>
+                  THB <span class="price_{{ $product->id }}">{{ $product->price - $product->value }}</span>
+                @elseif($product->type == 2)
+                  <s>THB <span class="ori_price_{{ $product->id }}">{{ $product->price }}</span></s>
+                  THB <span class="price_{{ $product->id }}">{{ number_format($product->price * ((100 - $product->value) / 100 ),2) }}</span>
+                @else
+                  THB <span class="price_{{ $product->id }}">{{ $product->price }}</span>
+                @endif
+             
+              </h6>
+
                 <a href="#" id="{{ $product->id }}" class="shop-cart" name="{{ $product->name }}" ><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart </a>
-              
+                <br>
+                <a href="#" id="{{ $product->id }}" class="add-wish" ><span class="glyphicon glyphicon-star"></span> Add to Wishlist </a>
             </div>
-            <!-- <div class="ratings">
-              <p class="pull-right">15 reviews</p>
-              <p>
-                  <span class="glyphicon glyphicon-star"></span>
-                  <span class="glyphicon glyphicon-star"></span>
-                  <span class="glyphicon glyphicon-star"></span>
-                  <span class="glyphicon glyphicon-star"></span>
-                  <span class="glyphicon glyphicon-star"></span>
-              </p>
-            </div> -->
           </div>
         </div>
         <?php $i++ ?>
@@ -64,3 +76,4 @@
     </div>
   </div> <!--end content-->
    @include('scripts.shop-cart')
+   @include('scripts.shop-wishlist')

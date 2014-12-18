@@ -22,22 +22,32 @@ class ImageController extends BaseController {
 
 	public function uploadImage(){
 		$file = Input::file('file');
+		
+		$input = array ('image' => $file );
+		$rules = array ( 'image' => 'image');
+
+		$validator = Validator::make($input,$rules);
+
 		// $filename = str_random(12);
 		//$filename = $file->getClientOriginalName();
-		$path = public_path().'/images/upload1';
-		$extension =$file->getClientOriginalExtension();
-		$filename = str_random(12).'.'.$extension;
-		$upload_success = $file->move($path,$filename);
-		// $path = $file->getRealPath();
-		$path = '/images/upload1/'.$filename;
-		if( $upload_success ) {
-			Images::create(array(
-				'link'=>$path
-			));
-		   return Response::json('success', 200);
-		} else {
-		   return Response::json('error', 400);
+
+		if(!$validator->fails()) {
+			$path = public_path().'/images/upload1';
+			$extension =$file->getClientOriginalExtension();
+			$filename = str_random(12).'.'.$extension;
+			$upload_success = $file->move($path,$filename);
+			// $path = $file->getRealPath();
+			$path = '/images/upload1/'.$filename;
+			if( $upload_success ) {
+				Images::create(array(
+					'link'=>$path
+				));
+			   return Response::json('success', 200);
+			} 
 		}
+		 else {
+			   return Response::json('error', 400);
+	    }
 	}
 
 	public function deleteImage($id){

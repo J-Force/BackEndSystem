@@ -29,7 +29,9 @@
         var total = parseFloat($('.price-total').html());
         $('.item-total').html( ( quantity + q_ori )+ " item(s) ");
 
+
         total += parseFloat($( ('.price_')+$(this).attr("id") ).html()) * quantity;
+        console.log($( ('.price_')+$(this).attr("id") ).html());
         $('.price-total').html( parseFloat(total).toFixed(2) );
 
 

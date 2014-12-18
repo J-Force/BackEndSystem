@@ -57,42 +57,14 @@
 					        <li>
                                 <a href="#">
                                 <img class="etalage_thumb_image" src="/jf-shop/{{$image->link}}" />
+                                
                                 <img class="etalage_source_image" src="/jf-shop/{{$image->link}}" />
                                 </a>
                             </li>
 					               
 					        @endforeach
 					              
-                          <!--   <li>
-                                <a href="#">
-                                <img class="etalage_thumb_image" src="/jf-shop/images/image1_thumb.jpg" />
-                                <img class="etalage_source_image" src="/jf-shop/images/image1_large.jpg" />
-                                </a>
-                            </li> -->
-                            <!-- <li>
-                                <img class="etalage_thumb_image" src="/jf-shop/images/image2_thumb.jpg" />
-                                <img class="etalage_source_image" src="/jf-shop/images/image2_large.jpg" />
-                            </li>
-                            <li>
-                                <img class="etalage_thumb_image" src="/jf-shop/images/image3_thumb.jpg" />
-                                <img class="etalage_source_image" src="/jf-shop/images/image3_large.jpg" />
-                            </li>
-                            <li>
-                                <img class="etalage_thumb_image" src="/jf-shop/images/image4_thumb.jpg" />
-                                <img class="etalage_source_image" src="/jf-shop/images/image4_large.jpg" />
-                            </li>
-                            <li>
-                                <img class="etalage_thumb_image" src="/jf-shop/images/image5_thumb.jpg" />
-                                <img class="etalage_source_image" src="/jf-shop/images/image5_large.jpg" />
-                            </li>
-                            <li>
-                                <img class="etalage_thumb_image" src="/jf-shop/images/image6_thumb.jpg" />
-                                <img class="etalage_source_image" src="/jf-shop/images/image6_large.jpg" />
-                            </li>
-                            <li>
-                                <img class="etalage_thumb_image" src="/jf-shop/images/image7_thumb.jpg" />
-                                <img class="etalage_source_image" src="/jf-shop/images/image7_large.jpg" />
-                            </li> -->
+                          
                         </ul>
                     </div>
                     <div class="details-left-info">
@@ -109,11 +81,11 @@
                                         }
 
                                         if($rates->count() > 0)
-                                            $avg = $sum / $rates->count();
+                                            $avg = ceil($sum / $rates->count());
                                         else
                                             $avg = $sum / 1;
 
-                                        $left = 5 - $avg;
+                                        $left = 5 - ceil($avg);
                                     ?>
                                     <span class="rate_widget">
                                         @for($i = 0 ; $i < $avg ;$i++)
@@ -131,8 +103,18 @@
                             <p class="product-detail-info" style="font-size:20px">{{ $product->description }} </p>
                             <div class="product-more-details">
                             	<br>
-                                <ul class="price-avl">                         
-                                    <label style="color:green;font-size:40px">Price : <span class="price_{{$product->id}}">{{ $product->price }}</span> baht</label>
+                                <ul class="price-avl"> 
+                                    @if($promotion->type==1)                        
+                                        <label style="color:red;font-size:30px"><s>Price : <span class="ori_price_{{$product->id}}">{{ $product->price }}</span> baht</s></label>
+                                        </br>
+                                        <label style="color:green;font-size:40px">Price : <span class="price_{{$product->id}}">{{ $product->price - $promotion->value }}</span> baht</label>
+                                    @elseif($promotion->type==2)                        
+                                        <label style="color:red;font-size:30px"><s>Price : <span class="ori_price_{{$product->id}}">{{ $product->price }}</span> baht</s></label>
+                                        </br>
+                                        <label style="color:green;font-size:40px">Price : <span class="price_{{$product->id}}">{{ number_format($product->price * ((100 - $promotion->value) / 100 ),2) }}</span> baht</label>
+                                    @else
+                                        <label style="color:green;font-size:40px">Price : <span class="price_{{$product->id}}">{{ $product->price }}</span> baht</label>
+                                    @endif
                               		</br>
                                     @if( $product->quantity > 0 )
                               		    <label style="font-size:20px;color:green">In Stock</label>
@@ -175,57 +157,10 @@
                 </div>
             </div>
         </div>
-         <div class="col-md-12">
-            <!-- description -->
-            <div  class="thumbnail">
-                <table class="detail">
-                    <tbody>
-                        <tr class="detail-head" style="color:white">
-                            <td>ขนาด<br/>(Size)</td>
-                            <td>ความยาว</td>
-                            <td>ไหล่</td>
-                            <td>อก</td>
-                            <td>ชายเสื้อ</td>
-                            <td>แขนยาว</td>
-                            <td>ปลายแขน</td>
-                            <td>วงแขน</td>
-                        </tr>
-                        <tr class="detail-body-1">
-                            <td>S</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                        </tr>
-                        <tr class="detail-body-2">
-                            <td>M</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                        </tr>
-                        <tr class="detail-body-1">
-                            <td>L</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                            <td>10</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
+    <br>
     <div class="well">
+        <h1>Comment & Rate</h1>
         <div class="text-left comment"> 
             <textarea col="100" row="30" name="comment"></textarea>
         </div>

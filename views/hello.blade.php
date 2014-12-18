@@ -2,6 +2,25 @@
 
 @section('content')
 
+<?php
+	$products = DB::table('hot_product')->take(8)->get();
+	foreach($products as $product) {
+		$pro = DB::table('product_images')->where('product_id', '=', $product->product_id)->first();
+		$link = DB::table('images')->where('id', '=', $pro->image_id)->first();
+		$product->link = $link->link;
+	}
+
+	$promotions = DB::table('promotions')->take(3)->get();
+
+	// foreach($promotions as $p) {
+	// 	$ids = DB::table('promotion_image')->where('promotion_id', '=' ,$p->id )->lists('image_id');
+	// 	if(count($ids) == 0){
+	// 		$ids = array(0);
+	// 	}
+	// 	$image = Images::whereIn('id',$ids)->take(1)->get();
+	// 	$p->link = $image->link;
+	// }
+?>
 <body id="page-top" data-spy="scroll" data-target=".navbar-custom">
 	<section class="hero" id="intro">
 		<div class="container">
@@ -47,20 +66,43 @@
 				<div class="row">
 					<div class="animatedParent">
 						<div class="row text-center">
-							<div class="row promotion-row">
-								 <div class="col-md-8"><img src="/jf-shop/images/promotion1.jpg"/></div>
-								 <div class="col-md-4"><img src="/jf-shop/images/promotion2.jpg"/></div>
+							<div class="row animatedParent" style="margin-bottom: 30px">
+						<?php $i = 0 ?>
+						@foreach($promotions as $promotion)
+						@if($i%3==0)
+						</div>
+						<div class="row animatedParent" style="margin-bottom: 30px">
+						@endif
+							<div class="col-xs-6 col-sm-4 col-md-4">
+								<div class="animated ">
+									<div class="service-box">
+										<div class="service-icon">
+											<?php
+									            $ids = DB::table('promotion_image')->where('promotion_id', '=' ,$promotion->id )->lists('image_id');
+									            if(count($ids) == 0){
+									              $ids = array(0);
+									            }
+									            $images = Images::whereIn('id',$ids)->take(1)->get();
+									         ?>
+									        @foreach ($images as $image) 
+												<img class="img-circle" src="/jf-shop/{{$image->link}}" style="width: 200px; height: 200px;">
+											@endforeach
+										</div>
+										<div class="service-desc">
+											<h5>{{$promotion->title}}</h5>
+											<div class="divider-header"></div>
+											<p>
+												{{substr($promotion->description,0,strlen($promotion->description)/2).'...'}}
+											</p>
+											<a href="{{URL::route('promotion-detail',$promotion->id)}}" class="btn btn-skin">Read more</a>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="row promotion-row">
-							  <div class="col-xs-6 col-sm-4 col-md-4"><img src="/jf-shop/images/promotion3.jpg"/></div>
-							  <div class="col-xs-6 col-sm-4 col-md-4"><img src="/jf-shop/images/promotion4.jpg"/></div>
-							  <div class="col-xs-6 col-sm-4 col-md-4"><img src="/jf-shop/images/promotion5.jpg"/></div>
-							</div>
-							<div class="row promotion-row">
-							  <div class="col-md-6"><img src="/jf-shop/images/promotion6.jpg"/></div>
-							  <div class="col-md-6"><img src="/jf-shop/images/promotion7.jpg"/></div>
-							</div>
-							<a href="#hotitems" class="btn btn-skin btn-scroll margintop-20">HOT ITEMS</a>
+							<?php $i++ ?>
+						@endforeach
+						</div>
+							<a href={{URL::route('promotions')}} class="btn btn-skin btn-scroll margintop-20">More</a>
 						</div>
 					</div>
 				</div>
@@ -96,23 +138,23 @@
 									<div class="row gallery-item">
 									
 										<div class="col-md-3 animated fadeInUp">
-											<a href="/jf-shop/images/works/1.jpg" title="DOUBLE BREASTED COAT / CHECKED SHIRT/ FLARED MINI DRESS WITH POCKETS" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
-											<img src="/jf-shop/images/works/1.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/1.1.jpg'"onmouseout="this.src='/jf-shop/images/works/1.jpg'" />
+											<a href={{"/jf-shop/products/show/".$products[0]->product_id}} title="DOUBLE BREASTED COAT / CHECKED SHIRT/ FLARED MINI DRESS WITH POCKETS" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src={{'/jf-shop'.$products[0]->link}} class="img-responsive" />
 											</a>
 										</div>
 										<div class="col-md-3 animated fadeInUp slow">
-											<a href="/jf-shop/images/works/2.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
-											<img src="/jf-shop/images/works/2.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/2.1.jpg'"onmouseout="this.src='/jf-shop/images/works/2.jpg'" />
+											<a href={{"/jf-shop/products/show/".$products[1]->product_id}} title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src={{'/jf-shop'.$products[1]->link}} class="img-responsive" />
 											</a>
 										</div>
 										<div class="col-md-3 animated fadeInUp slower">
-											<a href="/jf-shop/images/works/3.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
-											<img src="/jf-shop/images/works/3.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/3.1.jpg'"onmouseout="this.src='/jf-shop/images/works/3.jpg'" />
+											<a href={{"/jf-shop/products/show/".$products[2]->product_id}} title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src={{'/jf-shop'.$products[2]->link}} class="img-responsive" />
 											</a>
 										</div>
 										<div class="col-md-3 animated fadeInUp">
-											<a href="/jf-shop/images/works/4.jpg" title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
-											<img src="/jf-shop/images/works/4.jpg" class="img-responsive" onmouseover="this.src='/jf-shop/images/works/4.1.jpg'"onmouseout="this.src='/jf-shop/images/works/4.jpg'" />
+											<a href={{"/jf-shop/products/show/".$products[3]->product_id}} title="This is an image title" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src={{'/jf-shop'.$products[3]->link}} class="img-responsive" />
 											</a>
 										</div>
 									</div>
@@ -122,23 +164,23 @@
 								<div class="item">
 			                        <div class="row gallery-item">
 			                        	<div class="col-md-3 animated fadeInUp">
-											<a href="/jf-shop/images/works/tmp.jpg" title="TEMPLATE" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
-											<img src="/jf-shop/images/works/tmp.jpg" alt="Image" class="img-responsive">
+											<a href={{"/jf-shop/products/show/".$products[4]->product_id}} title="TEMPLATE" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src={{'/jf-shop'.$products[4]->link}} alt="Image" class="img-responsive">
 											</a>
 										</div>
 										<div class="col-md-3 animated fadeInUp slow">
-											<a href="/jf-shop/images/works/tmp.jpg" title="TEMPLATE" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
-											<img src="/jf-shop/images/works/tmp.jpg" alt="Image" class="img-responsive">
+											<a href={{"/jf-shop/products/show/".$products[5]->product_id}} title="TEMPLATE" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src={{'/jf-shop'.$products[5]->link}} alt="Image" class="img-responsive">
 											</a>
 										</div>
 										<div class="col-md-3 animated fadeInUp slower">
-											<a href="/jf-shop/images/works/tmp.jpg" title="TEMPLATE" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
-											<img src="/jf-shop/images/works/tmp.jpg" alt="Image" class="img-responsive">
+											<a href={{"/jf-shop/products/show/".$products[6]->product_id}} title="TEMPLATE" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src={{'/jf-shop'.$products[6]->link}} alt="Image" class="img-responsive">
 											</a>
 										</div>
 										<div class="col-md-3 animated fadeInUp">
-											<a href="/jf-shop/images/works/tmp.jpg" title="TEMPLATE" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
-											<img src="/jf-shop/images/works/tmp.jpg" alt="Image" class="img-responsive">
+											<a href={{"/jf-shop/products/show/".$products[7]->product_id}} title="TEMPLATE" data-lightbox-gallery="gallery1" data-lightbox-hidpi="/jf-shop/images/works/1@2x.jpg">
+											<img src={{'/jf-shop'.$products[7]->link}} alt="Image" class="img-responsive">
 											</a>
 										</div>
 			                        </div>
@@ -159,7 +201,7 @@
 		</section>
 		<!-- /Section: hot items -->
 		<!-- Section: services -->
-		<section id="service" class="home-section color-dark bg-gray">
+		<!-- <section id="service" class="home-section color-dark bg-gray">
 			<div class="container marginbot-50">
 				<div class="row">
 					<div class="col-lg-8 col-lg-offset-2">
@@ -229,7 +271,7 @@
 					</div>
 				</div>
 			</div>
-		</section>
+		</section> -->
 		<!-- /Section: News -->
 		
 		<!-- /Section: services -->

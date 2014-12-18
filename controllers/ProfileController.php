@@ -5,6 +5,23 @@ class ProfileController extends BaseController {
 		$this->beforeFilter('auth');
 	}
 
+	public function historyBill(){
+		$order = DB::table('order_history')
+		->where('user_id',Auth::user()->id)->get();
+
+		$arr = [];
+		foreach($order as $o) {
+			$ch = curl_init(($o->payment_url_callback).'/status');                                                                      
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");                                                                                                                             
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+			$result = json_decode(html_entity_decode(curl_exec($ch)),true);
+			$o->status = $result['status'];
+
+		}
+
+		return View::make('profile.history')
+				->with('orders',$order);
+	}
 	
 	public function user() {
 
@@ -18,6 +35,10 @@ class ProfileController extends BaseController {
 		return App::abort(404);
 	}
 
+	public function getUserAjax() {
+		return User::find(Auth::user()->id);
+	}
+
 	public function postUpdate() {
 
 		$user = User::find(Auth::user()->id);
@@ -29,7 +50,7 @@ class ProfileController extends BaseController {
 				'first_name'	=> 'required',
 				'last_name'		=> 'required',
 				'address'		=> 'required',
-				'phone'			=> 'required|numeric'
+				'phone'			=> 'required'
 			)
 		);
 

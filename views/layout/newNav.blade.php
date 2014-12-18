@@ -4,7 +4,7 @@
 			<div class="row">
 				<div class="col-md-2">
 					<div class="site-logo">
-						<a href="{{ URL::route('home') }}" class="brand">J Force</a>
+						<a href="{{ URL::route('home') }}" class="brand">J Force SHOP</a>
 					</div>
 				</div>
 				<div class="col-md-10">
@@ -20,8 +20,10 @@
 							<!-- Search box -->
 			        	</ul>
 						<ul class="nav navbar-nav navbar-right">
-							<li class="active"><a href="{{ URL::route('home') }}">Home</a></li>
-							<li><a href="{{ URL::route('news') }}">Promotion</a></li>
+							<li class="active"><a href="{{ URL::route('catalog-man') }}">Men</a></li>
+              <li class="active"><a href="{{ URL::route('catalog-women') }}">Women</a></li>
+							<li><a href="{{ URL::route('promotions') }}">Promotion</a></li>
+              <li><a href="{{ URL::route('product-search-view') }}">Search</a></li>
 							@if(!Auth::check())
 								<li><a href="{{ URL::route('account-create') }}">Sign Up</a></li>
 								<li><a href="{{ URL::route('account-sign-in') }}">Sign In</a></li>
@@ -29,6 +31,7 @@
                 @if(Entrust::hasRole('Admin'))                 
                   <li><a href="{{ URL::route('admin') }}"> Admin </a></li>
                 @endif
+                <li class="wishlist"><a href="{{ URL::route('user-wishlist') }}">WishList</a></li>
                 <li style="margin-top: 5px">
                     <div >
                       <div id="cart" class="btn-group btn-block" >
@@ -49,6 +52,7 @@
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i></a>
 									<ul class="dropdown-menu">
 										<li><a href="{{ URL::route('profile-user') }}">Account Settings</a></li>
+                    <li><a href="{{ URL::route('bill-history-user') }}">Order History</a></li>
 										<li><a class="sign_out" href="{{ URL::route('account-sign-out') }}">Log Out</a></li>
 									</ul>
 								</li>
@@ -157,7 +161,7 @@ $(document).ready(function(){
                         "<a href='/jf-shop/user/orders'>",
                             "View Cart",
                         "</a>",
-                        "<a href='#'>",
+                        "<a href='/jf-shop/user/payment'>",
                           "Checkout",
                         "</a>",
                       "</p>",

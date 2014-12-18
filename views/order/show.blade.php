@@ -84,7 +84,7 @@
 			                </td>
 			                <td>
 			                	<button class="btn btn-small btn-danger remove" data-tip="tooltip" data-placement="top" data-title="Remove" data-original-title="" style="margin-top:32.5px"
-			                	name="product_id" id="{{ $order->product_id }}" >
+			                	name="product_id" id="{{ $order->product_id }}" order-id="{{$order->id}}">
 			                        <i class="glyphicon glyphicon-trash"></i>
 			                    </button>
 							</td>
@@ -99,6 +99,31 @@
 		            <div class="cart-receipt">
 		                <table class="table table-receipt">
 		                    <tbody>
+		                    	<tr>
+		                            <td class="alignRight">
+		                                <h6>
+		                                    Total (Excuding VAT)
+		                                </h6>
+		                            </td>
+		                            <td class="alignLeft">
+		                                <h6 class="price-excude">
+		                                    {{ number_format($total_price/1.07,2) }}
+		                                </h6>
+		                            </td>
+		                        </tr>
+		                    	<tr>
+		                            <td class="alignRight">
+		                                <h6>
+		                                    VAT
+		                                </h6>
+		                            </td>
+		                            <td class="alignLeft">
+		                                <h6 class="price-vat">
+		                                    {{ number_format($total_price - ($total_price/1.07),2) }}
+		                                </h6>
+		                            </td>
+		                        </tr>
+		                        <tr>
 		                            <td class="alignRight">
 		                                <h2>
 		                                    Total
@@ -113,11 +138,11 @@
 		                        <tr>
 		                            <td class="alignRight">
 		                                <button class="btn" onclick='location.href="{{ URL::route("catalog-man") }}"'>
-		                                    Contuine Shoping
+		                                    Continue Shopping
 		                                </button>
 		                            </td>
 		                            <td class="alignLeft">
-		                                <button class="btn btn-primary">
+		                                <button class="btn btn-primary" onclick='location.href="{{ URL::route("payment") }}"'>
 		                                    Checkout
 		                                </button>
 		                            </td>
@@ -158,6 +183,8 @@
 				* parseFloat( $('.sub_price_'+product_id).html() )) ;
 
 			$('.total_price_'+product_id).html( parseFloat(total_price).toFixed(2) );
+			updateVAT();
+
 
 		});
 
@@ -170,25 +197,30 @@
 		    var product_id = $(this).attr("id");
 
 		    if( r ) {
+		    	var quantity =  parseInt($('.item-total').html());
+				var total = parseFloat($('.price-total').html());
+				var removed_quantity = parseFloat( $('.q_'+product_id).val() )
+				var total_price = removed_quantity
+				* parseFloat( $('.sub_price_'+product_id).html() );
+				var order_id = $(this).attr("order-id");
+				
 	     		$.post( "/jf-shop/user/orders/remove_cart", 
 	     			{ 
-	     				product_id:  product_id 
-	     			}, function(res,status) {}
+	     				product_id:  product_id ,
+	     				order_id: order_id
+	     			}, function(res,status) {
+	     				console.log(res);
+	     			}
 	     		);
 	     		changeColor();
 	     		$('.order_des_'+ product_id).remove();
 
-
-				var quantity =  parseInt($('.item-total').html());
-				var total = parseFloat($('.price-total').html());
-				var total_price = parseFloat( $('.q_'+product_id).val() ) 
-				* parseFloat( $('.sub_price_'+product_id).html() );
-
-				quantity -= parseInt($('.q_'+product_id).val());
+				quantity -= removed_quantity;
 				total -= total_price;
 
 				$('.item-total').html( (quantity) + " item(s) ");
         		$('.price-total').html(parseFloat(total).toFixed(2));
+        		updateVAT();
 
      		}
 			
@@ -208,6 +240,10 @@
 					function(res,status){}
 				);
 
+				console.log($('.item-total').html());
+				console.log($('.item-total').html());
+				console.log($('.q_'+product_id).val());
+				console.log($('.sub_price_'+product_id).html());
 				$('.q_'+product_id).val( parseInt( $( '.q_'+product_id ).val() ) - 1);
 
 				var total_price = parseFloat( $('.q_'+product_id).val()  
@@ -224,6 +260,7 @@
 
 				$('.item-total').html( (quantity-1) + " item(s) ");
         		$('.price-total').html(parseFloat(total).toFixed(2));
+        		updateVAT();
 
 			}
 		});
@@ -258,6 +295,7 @@
 
 			$('.item-total').html( (quantity+1) + " item(s) ");
         	$('.price-total').html(parseFloat(total).toFixed(2));
+        	updateVAT();
 			
 		});
 
@@ -268,6 +306,7 @@
 				   function(res,data) {
 				   	 $('.price-total').html(parseFloat(res[0]).toFixed(2));
 				   	 $('.item-total').html( (res[1]) + " item(s) "); 
+				   	 updateVAT();
 				   }
 			);
 
@@ -279,6 +318,15 @@
 	        setTimeout( function() {
 	          $('#cart-dropdown').css( 'background-color' , '#40E0D0' );
 	        },1000);
+		}
+
+		function updateVAT() {
+			var total = parseFloat($('.price-total').html());
+			var excude = total/1.07;
+			var vat = total - excude;
+        	$('.price-excude').html(parseFloat(excude).toFixed(2));
+        	$('.price-vat').html(parseFloat(vat).toFixed(2));
+
 		}
 
 	});

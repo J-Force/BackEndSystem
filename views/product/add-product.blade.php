@@ -8,7 +8,7 @@
 		<br/>
 		<h1>Add New Products</h1>
 		@if($errors->has())
-		<ul>
+		<ul class="errors">
 			{{ $errors->first('name','<li>:message</li>') }}
 			{{ $errors->first('description','<li>:message</li>') }}
 			{{ $errors->first('cost','<li>:message</li>') }}
@@ -49,6 +49,10 @@
 			{{ Form::label('sex : M or F') }}<br/>
 			{{ Form::text('sex',Input::old('sex')) }}
 		</p>
+		<p>{{ Form::label('Category') }}<br/>
+		   {{ Form::select('category' , $category , array(
+		                  'class' => 'btn btn-default dropdown-toggle')) }}
+		</p>
 		<p>
 			{{ Form::label('quantity : example 10') }}<br/>
 			{{ Form::text('quantity',Input::old('quantity')) }}
@@ -58,4 +62,9 @@
 		</p>
 		{{ Form::close() }}
 	</div>
+	<style>
+		.errors li {
+			color:red;
+		}
+	</style>
 @endsection

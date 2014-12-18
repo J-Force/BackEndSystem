@@ -16,11 +16,31 @@ Route::get('/', array(
 	'uses' => 'HomeController@home')
 );
 
-Route::get('/news', array('as' => 'news', 'uses' => 'NewsController@getAll') );
+Route::get('/promotions', array('as' => 'promotions', 'uses' => 'PromotionController@getAll') );
+
+Route::get('/promotions/{id}' ,array(
+	'as' => 'promotion-detail',
+	'uses' => 'PromotionController@get'
+));
 
 Route::get('/products/{id}', array('as' => 'product' , 'uses' => 'ProductController@view') );
 
 Route::get('/products/show/{id}', array('as' => 'product-id', 'uses' => 'ProductController@showDetail'));
+
+Route::get('/search', array(
+	'as' => 'product-search-view',
+	'uses' => 'ProductController@showSearch'
+));
+
+Route::get('/getdata', array(
+	'as' => 'product-search-getdata',
+	'uses' => 'ProductController@getData'
+));
+
+Route::get('/search/{name}', array(
+	'as' => 'product-search',
+	'uses' => 'ProductController@searchProduct'
+));
 
 /*
 	
@@ -29,6 +49,10 @@ Route::get('/catalog/man' , array(
 	'as' => 'catalog-man' ,
 	'uses' => 'ProductController@getCatalogMen'
 ));
+Route::get('/catalog/man/{cat}' , array(
+	'as' => 'catalog-man-category' ,
+	'uses' => 'ProductController@getCatalogMenByCat'
+));
 
 /*
 	
@@ -36,6 +60,10 @@ Route::get('/catalog/man' , array(
 Route::get('/catalog/women' , array(
 	'as' => 'catalog-women' ,
 	'uses' => 'ProductController@getCatalogWomen'
+));
+Route::get('/catalog/women/{cat}' , array(
+	'as' => 'catalog-women-category' ,
+	'uses' => 'ProductController@getCatalogWomenByCat'
 ));
 
 /*
@@ -110,6 +138,11 @@ Route::group(array('before' => 'auth'),function(){
 			'uses' => 'ProfileController@user'
 		));
 
+		Route::get('/user/bills/history' , array(
+			'as' => 'bill-history-user',
+			'uses' => 'ProfileController@historyBill'
+		));
+
 		/*
 			User Cart GET ( View )
 		*/
@@ -158,6 +191,61 @@ Route::group(array('before' => 'auth'),function(){
 			'uses' => 'ReviewController@getVote'
 		));
 
+		/*
+			User Wishlist GET ( View )
+		*/
+		Route::get('/user/wishlist' ,array(
+			'as' => 'user-wishlist',
+			'uses' => 'WishListController@getUserWishList'
+		));
+
+		/*
+			Add to Wishlist
+		*/
+		Route::post('/user/wishlist/addWishlist' ,array(
+			'as' => 'user-wishlist-add',
+			'uses' => 'WishListController@addWishList'
+		));
+
+		/*
+			Remove to Wishlist
+		*/
+		Route::post('/user/wishlist/removeWishlist' ,array(
+			'as' => 'user-wishlist-remove',
+			'uses' => 'WishListController@removeWishList'
+		));
+
+		Route::post('/user/wishlist/addToCart',array(
+			'as' => 'user-wishlist-add-cart',
+			'uses' => 'WishListController@addWishlistToCart'
+		));
+
+		Route::get('/user/payment', array(
+			'as' => 'payment',
+			'uses' => 'PaymentController@index'
+		));
+
+		Route::post('user/payment/create',array(
+			'as'  => 'payment-result',
+			'uses' => 'PaymentController@checkout'
+		));
+
+		Route::get('user/payment/result/{id}', array(
+			'as' => 'payment-result-last',
+			'uses' => 'PaymentController@result'
+		));
+
+		Route::post('user/payment/{id}/addURL',array(
+			'as' => 'add-url-to-order-history',
+			'uses' => 'PaymentController@addPaymentCallback'
+		));
+		/*
+			Get user ajax
+		*/
+		Route::get('/user/ajaxuser',array(
+			'as' => 'user-ajax',
+			'uses' => 'ProfileController@getUserAjax'
+		));
 
 	});
 
@@ -168,6 +256,15 @@ Route::group(array('before' => 'auth'),function(){
 		Route::get('/' , array(
 				'as' => 'admin' ,
 				'uses' => 'AdminController@index'
+		));
+
+		Route::put('/hot', array(
+			'as' => 'update.hot.product',
+			'uses' => 'AdminController@update_hot_item'
+		));
+		Route::get('/hot', array(
+			'as' => 'get.hot.product',
+			'uses' => 'AdminController@get_hot_product'
 		));
 
 		Route::get('/products' , array('as' => 'products' , 'uses' => 'ProductController@showProduct') );
@@ -190,6 +287,15 @@ Route::group(array('before' => 'auth'),function(){
 
 		Route::delete('products/remove-image', array('before' => 'csrf','uses' => 'ProductController@removeProductImage'));
 
+		Route::get('/category-add', array('as' => 'category-add-view' , 'uses' => 'ProductController@showAddCategory') );
+
+		Route::post('/category/create', array('before' => 'csrf','uses' => 'ProductController@addCategory'));
+
+		Route::delete('/category/delete/{id}', array('uses' => 'ProductController@deleteCategory'));
+
+		Route::get('/report', array('as' => 'report' ,'uses' => 'ReportController@showReport'));
+
+		Route::post('/report/update', array('as' => 'report-update' ,'uses' => 'ReportController@updateReport'));
 
 		Route::get('/users' , array(
 			'as' => 'users-all',
@@ -206,14 +312,35 @@ Route::group(array('before' => 'auth'),function(){
 			'uses' => 'ImageController@indexUpload'
 		));
 
-		Route::post('user/upload' ,'ImageController@uploadImage');
+		Route::post('/user/upload' ,'ImageController@uploadImage');
 
 		Route::delete('image/delete/{id}', array('uses' => 'ImageController@deleteImage'));
 
-		Route::get('/orders' , array(
-			'as' => 'order-all',
+		Route::get('/orders/active' , array(
+			'as' => 'order-active',
 			'uses' => 'OrderController@getActiveOrder'
 		));
+
+		Route::get('/bills',array(
+			'as' => 'bill-history',
+			'uses' => 'BillController@history'
+		));
+
+		Route::get('/promotions',array(
+			'as'	=> 'promotion',
+			'uses'	=> 'PromotionController@showadd'
+		));
+
+		Route::post('/promotions',array(
+			'as' => 'add-promotion',
+			'uses' => 'PromotionController@add'
+		));
+
+		Route::post('/promotions/products',array(
+			'as' => 'add-promotion-product',
+			'uses' => 'PromotionController@addPromotionProduct'
+		));
+
 	}); 
 	
 
@@ -296,8 +423,33 @@ Route::group( array('before' => 'guest'), function(){
 		'uses' => 'AccountController@getCreate'
 	));
 
-
+	
+	
 });
+Route::group(array('prefix' => 'api/v1'), function()
+	{
+	     Route::get('/orders' , array(
+			'as' => 'get-orders' ,
+			'uses' => 'ApiController@getOrder'
+		));	
+	    Route::get('/orders/{id}' , array(
+			'as' => 'get-orders-id' ,
+			'uses' => 'ApiController@getOrderByID'
+		));	
+	    Route::get('/products' , array(
+			'as' => 'get-products' ,
+			'uses' => 'ApiController@getProduct'
+		));	
+		Route::get('/products/{id}' , array(
+			'as' => 'get-products-id' ,
+			'uses' => 'ApiController@getProductByID'
+		));
+		Route::post('/orders/' , array(
+			'as' => 'update-order' ,
+			'uses' => 'ApiController@updateOrder'
+		));
+	 
+	});
 
 
 

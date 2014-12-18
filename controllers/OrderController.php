@@ -13,13 +13,19 @@ class OrderController extends BaseController {
 			if($user){
 			
 
-				$orders = Order::where('user_id' ,'=' ,$user->id)->get();
+				$orders = Order::where('user_id' ,'=' ,$user->id)
+								->where('status','=',1)->get();
 
 				foreach ($orders as $order)
 				{
 				    $product = Product::find($order->product_id);
 				    $order->product_name = $product->name;
+				    $promotion = DB::table('product_promotion')->where('product_id',$order->product_id)->first();
 				    $order->price = $product->price;
+				    if($promotion!=null){
+				    	if($promotion->type==1)$order->price -= $promotion->value;
+				    	else $order->price *= (100-$promotion->value)/100;
+				    }
 				}
 				
 				return View::make('order.show')->with('orders', $orders);
@@ -50,6 +56,8 @@ class OrderController extends BaseController {
 		return Redirect::route('home')->with('fail' , 'Permission Denied');
 	}
 
+
+
 	public function getOrderToCartPop() {
 			
 			$user = Auth::user();
@@ -57,13 +65,20 @@ class OrderController extends BaseController {
 			if($user){
 			
 
-				$orders = Order::where('user_id' ,'=' ,$user->id)->get();
+				$orders = Order::where('user_id' ,'=' ,$user->id)
+								->where('status','=',1)->get();
 
 				foreach ($orders as $order)
 				{
 				    $product = Product::find($order->product_id);
 				    $order->product_name = $product->name;
 				    $order->price = $product->price;
+				    $promotion = DB::table('product_promotion')->where('product_id',$order->product_id)->first();
+				    $order->price = $product->price;
+				    if($promotion!=null){
+				    	if($promotion->type==1)$order->price -= $promotion->value;
+				    	else $order->price *= (100-$promotion->value)/100;
+				    }
 				}
 
 				return $orders;
@@ -83,6 +98,7 @@ class OrderController extends BaseController {
 					array(
 						'product_id' => $product_id , 
 						'user_id' 	 => $user->id ,
+						'status'	 => 1
 					) 
 				);
 
@@ -114,7 +130,8 @@ class OrderController extends BaseController {
 				$quantity = Input::get('quantity');
 				$product_id = Input::get('product_id');
 
-				$order = Order::where('user_id' , '=' , $user->id )
+				$order = Order::where('status','=',1)
+								->where('user_id' , '=' , $user->id )
 				                ->where('product_id','=',$product_id)->get();    
 
 				foreach( $order as $o ) {
@@ -136,11 +153,12 @@ class OrderController extends BaseController {
 				$quantity = Input::get('quantity');
 				$product_id = Input::get('product_id');
 
-				$order = Order::where('user_id' , '=' , $user->id )
+				$order = Order::where('status','=',1)
+								->where('user_id' , '=' , $user->id )
 				                ->where('product_id','=',$product_id)->get();
 
 				foreach( $order as $o ) {
-					$o->quantity += $quantity;
+					$o->quantity -= $quantity;
 					$o->save();
 				}
 
@@ -156,7 +174,10 @@ class OrderController extends BaseController {
 			if($user) {
 
 				$product_id = Input::get('product_id');
-				DB::table('orders')->where('product_id' , '=' , $product_id )->delete();
+				$order_id = Input::get('order_id');
+				DB::table('active_orders')->where('order_id' , '=' , $order_id )->delete();
+				DB::table('orders')->where('user_id','=',$user->id)->
+				where('product_id' , '=' , $product_id )->delete();
 
 			}
 		
@@ -166,7 +187,8 @@ class OrderController extends BaseController {
 
 		$user = Auth::user();
 
-		$orders = Order::where('user_id','=',$user->id)->get();
+		$orders = Order::where('status','=',1)->
+						where('user_id','=',$user->id)->get();
 		$total_price = 0;
 		$total_quantity = 0;
 
